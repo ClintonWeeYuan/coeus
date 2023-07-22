@@ -7,7 +7,7 @@ const Dashboard: NextPageWithLayout = () => {
   const { mutate } = trpc.user.createUser.useMutation();
 
   const handleClick = async () => {
-    const res = await mutate({ firstName, lastName, email });
+    await mutate({ firstName, lastName, email });
   };
 
   const [firstName, setFirstName] = useState("");
