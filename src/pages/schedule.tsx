@@ -1,9 +1,6 @@
-import { Inter } from "next/font/google";
 import { ReactElement } from "react";
-import Layout from "@/src/components/Layout";
-import { NextPageWithLayout } from "@/src/pages/_app";
-
-const inter = Inter({ subsets: ["latin"] });
+import Layout from "@/components/Layout";
+import { NextPageWithLayout } from "@/pages/_app";
 
 const Schedule: NextPageWithLayout = () => {
   return (

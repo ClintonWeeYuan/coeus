@@ -40,7 +40,7 @@ const Sidebar: FC = () => {
       </div>
 
       <div className="flex flex-col py-4">
-        {links.map((link, index) => (
+        {links.map((link) => (
           <div
             key={link.name}
             className="flex relative items-center p-2 hover:bg-secondary-300 hover:cursor-pointer rounded-lg mb-2"

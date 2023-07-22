@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import Sidebar from "@/src/components/Sidebar";
+import Sidebar from "@/components/Sidebar";
 import Head from "next/head";
 
 interface Props {
