@@ -23,7 +23,7 @@ const userSchema = new Schema<IUser>({
 
 const userModel = () => {
   return mongoose.models && mongoose.models.User
-    ? mongoose.models.User
+    ? mongoose.models.User as mongoose.Model<IUser>
     : model<IUser>("User", userSchema);
 };
 
