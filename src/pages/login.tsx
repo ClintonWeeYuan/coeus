@@ -2,6 +2,7 @@ import { NextPageWithLayout } from '@/pages/_app';
 import { trpc } from '@/utils/trpc';
 import { FormEvent, useState } from 'react';
 import LoadingButton from '@/components/common/LoadingButton';
+import Link from 'next/link';
 
 const Login: NextPageWithLayout = () => {
     const { mutateAsync } = trpc.session.login.useMutation();
@@ -13,7 +14,7 @@ const Login: NextPageWithLayout = () => {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const user = await mutateAsync({ email, password });
+            await mutateAsync({ email, password });
         } catch (e) {
             console.log(e);
         }
@@ -100,12 +101,12 @@ const Login: NextPageWithLayout = () => {
                                 />
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                     Don’t have an account yet?{' '}
-                                    <a
-                                        href="/signup"
+                                    <Link
                                         className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                                        href="/signup"
                                     >
                                         Sign up
-                                    </a>
+                                    </Link>
                                 </p>
                             </form>
                         </div>

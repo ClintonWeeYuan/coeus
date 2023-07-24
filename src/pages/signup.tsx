@@ -4,6 +4,7 @@ import { trpc } from '@/utils/trpc';
 import { IUser } from '@/models/user.model';
 import LoadingButton from '@/components/common/LoadingButton';
 import { useState } from 'react';
+import Link from 'next/link';
 const Signup: NextPageWithLayout = () => {
     const { register, handleSubmit } = useForm<IUser>();
 
@@ -103,12 +104,12 @@ const Signup: NextPageWithLayout = () => {
                                 />
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                     Already have an account?{' '}
-                                    <a
-                                        href="/login"
+                                    <Link
                                         className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                                        href="/login"
                                     >
                                         Login here
-                                    </a>
+                                    </Link>
                                 </p>
                             </form>
                         </div>
