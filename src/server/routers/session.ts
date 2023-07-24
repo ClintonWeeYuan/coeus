@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 import { TRPCError } from '@trpc/server';
 import { UserSession } from '@/lib/session';
 
-export const session = router({
+const sessionRouter = router({
     login: procedure
         .input(z.object({ email: z.string().email(), password: z.string() }))
         .mutation(async ({ ctx, input }) => {
@@ -40,3 +40,5 @@ export const session = router({
             }
         }),
 });
+
+export default sessionRouter;
