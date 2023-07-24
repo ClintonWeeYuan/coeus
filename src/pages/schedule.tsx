@@ -1,17 +1,21 @@
-import { ReactElement } from "react";
-import Layout from "@/components/Layout";
-import { NextPageWithLayout } from "@/pages/_app";
+import { ReactElement } from 'react';
+import Layout from '@/components/Layout';
+import { NextPageWithLayout } from '@/pages/_app';
+import Header from '@/components/schedule/Header';
+import CreateClassModal from '@/components/schedule/CreateClassModal';
 
 const Schedule: NextPageWithLayout = () => {
-  return (
-    <div className="">
-      <p>Schedule</p>
-    </div>
-  );
+    return (
+        <div className="">
+            <Header />
+            <p>Schedule</p>
+            <CreateClassModal />
+        </div>
+    );
 };
 
 Schedule.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
+    return <Layout>{page}</Layout>;
 };
 
 export default Schedule;

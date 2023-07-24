@@ -1,8 +1,10 @@
-import { router } from "@/server/trpc";
-import userRouter from "@/server/routers/userRouter";
+import { router } from '@/server/trpc';
+import userRouter from '@/server/routers/user';
+import classRouter from '@/server/routers/class';
 
 export const appRouter = router({
-  user: userRouter,
+    user: userRouter,
+    class: classRouter,
 });
 
 // export type definition of API
