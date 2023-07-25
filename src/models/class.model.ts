@@ -17,16 +17,6 @@ export interface IClass {
     link: string;
 }
 
-export const classZod = z.object({
-    owner: z.instanceof(mongoose.Schema.Types.ObjectId),
-    type: ClassEnum,
-    name: z.string(),
-    startTime: z.date(),
-    endTime: z.date(),
-    alert: AlertEnum,
-    link: z.string(),
-});
-
 const classSchema = new Schema<IClass>({
     owner: {
         ref: 'User',
@@ -60,8 +50,8 @@ const classSchema = new Schema<IClass>({
 });
 
 const classModel = () => {
-    return mongoose.models && mongoose.models.User
-        ? (mongoose.models.User as mongoose.Model<IClass>)
+    return mongoose.models && mongoose.models.Class
+        ? (mongoose.models.Class as mongoose.Model<IClass>)
         : model<IClass>('Class', classSchema);
 };
 

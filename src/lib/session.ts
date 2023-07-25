@@ -1,8 +1,7 @@
 import type { IronSessionOptions } from 'iron-session';
-import { ObjectId } from 'bson';
 
 export interface UserSession {
-    id: ObjectId | null;
+    id: string | null;
     firstName: string;
     lastName: string;
     email: string;
