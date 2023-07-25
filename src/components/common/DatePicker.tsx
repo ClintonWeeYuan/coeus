@@ -84,7 +84,7 @@ const ButtonInput: FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>(
             onClick={onClick}
             ref={ref}
             type="button"
-            className="inline-flex justify-start w-full px-3 py-2 text-sm rounded-md text-gray-700 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500"
+            className="inline-flex justify-start w-full px-3 py-2 text-sm rounded-md text-gray-700 bg-white border border-gray-300 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500"
         >
             {dayjs(value).format('DD/MM/YYYY')}
         </button>
