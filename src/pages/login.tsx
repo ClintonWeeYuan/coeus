@@ -3,18 +3,27 @@ import { trpc } from '@/utils/trpc';
 import { FormEvent, useState } from 'react';
 import LoadingButton from '@/components/common/LoadingButton';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import useUser from '@/components/hooks/useUser';
 
 const Login: NextPageWithLayout = () => {
     const { mutateAsync } = trpc.session.login.useMutation();
     const [isLoading, setIsLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const router = useRouter();
+
+    useUser({
+        redirectTo: '/dashboard',
+        redirectIfFound: true,
+    });
 
     const onSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
         try {
             await mutateAsync({ email, password });
+            await router.push('/dashboard');
         } catch (e) {
             console.log(e);
         }

@@ -39,6 +39,32 @@ const sessionRouter = router({
                 });
             }
         }),
+    logout: procedure.mutation(async ({ ctx }) => {
+        ctx.session.destroy();
+        return {
+            isLoggedIn: false,
+            id: null,
+            firstName: '',
+            lastName: '',
+            email: '',
+        } as UserSession;
+    }),
+    user: procedure.query(async ({ ctx }) => {
+        if (ctx.session.user) {
+            return {
+                ...ctx.session.user,
+                isLoggedIn: true,
+            } as UserSession;
+        } else {
+            return {
+                isLoggedIn: false,
+                id: null,
+                email: '',
+                firstName: '',
+                lastName: '',
+            } as UserSession;
+        }
+    }),
 });
 
 export default sessionRouter;

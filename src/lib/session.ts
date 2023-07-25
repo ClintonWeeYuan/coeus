@@ -2,11 +2,11 @@ import type { IronSessionOptions } from 'iron-session';
 import { ObjectId } from 'bson';
 
 export interface UserSession {
-    id: ObjectId;
+    id: ObjectId | null;
     firstName: string;
     lastName: string;
     email: string;
-    isLoggedIn: true;
+    isLoggedIn: boolean;
 }
 
 export const sessionOptions: IronSessionOptions = {

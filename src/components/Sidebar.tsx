@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import { MdLibraryBooks } from 'react-icons/md';
 import { RiDashboardFill } from 'react-icons/ri';
 import { AiFillSchedule } from 'react-icons/ai';
+import useUser from '@/components/hooks/useUser';
+import { trpc } from '@/utils/trpc';
 
 const links = [
     {
@@ -27,6 +29,15 @@ const links = [
 
 const Sidebar: FC = () => {
     const router = useRouter();
+    const { user } = useUser();
+
+    const { mutateAsync } = trpc.session.logout.useMutation();
+
+    const logout = async (): Promise<void> => {
+        await mutateAsync();
+        console.log('Hello There');
+        await router.push('/login');
+    };
 
     return (
         <div className="h-full bg-secondary-500 text-neutral-light py-4 px-4">
@@ -63,6 +74,19 @@ const Sidebar: FC = () => {
                     </div>
                 ))}
             </div>
+            <div>
+                <p>
+                    {user?.firstName} {user?.lastName}
+                </p>
+            </div>
+
+            <button
+                className="btn btn-error"
+                type="button"
+                onClick={() => logout()}
+            >
+                Logout
+            </button>
         </div>
     );
 };
