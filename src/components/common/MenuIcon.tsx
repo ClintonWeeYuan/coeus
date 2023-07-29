@@ -19,24 +19,24 @@ const MenuIcon: FC<Props> = ({ isOpen }) => {
     const path01Controls = useAnimation();
     const path02Controls = useAnimation();
 
-    const performAnimation = async () => {
-        if (isOpen) {
-            await path02Controls.start(path02Variants.moving);
-            path01Controls.start(path01Variants.open);
-            path02Controls.start(path02Variants.open);
-        } else {
-            path01Controls.start(path01Variants.closed);
-            await path02Controls.start(path02Variants.moving);
-            path02Controls.start(path02Variants.closed);
-        }
-    };
-
     useEffect(() => {
+        const performAnimation = async () => {
+            if (isOpen) {
+                await path02Controls.start(path02Variants.moving);
+                path01Controls.start(path01Variants.open);
+                path02Controls.start(path02Variants.open);
+            } else {
+                path01Controls.start(path01Variants.closed);
+                await path02Controls.start(path02Variants.moving);
+                path02Controls.start(path02Variants.closed);
+            }
+        };
+
         performAnimation();
-    }, [isOpen]);
+    }, [isOpen, path01Controls, path02Controls]);
 
     return (
-        <button>
+        <div>
             <svg width="24" height="24" viewBox="0 0 24 24">
                 <motion.path
                     {...path01Variants.closed}
@@ -51,7 +51,7 @@ const MenuIcon: FC<Props> = ({ isOpen }) => {
                     stroke="#FFFFFF"
                 />
             </svg>
-        </button>
+        </div>
     );
 };
 

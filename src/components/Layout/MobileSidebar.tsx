@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -8,7 +8,6 @@ import { RiDashboardFill } from 'react-icons/ri';
 import { AiFillSchedule } from 'react-icons/ai';
 import useUser from '@/components/hooks/useUser';
 import { trpc } from '@/utils/trpc';
-import { useWindowSize } from '@/components/hooks/useWindowSize';
 import MenuIcon from '@/components/common/MenuIcon';
 import OutsideDetecter from '@/components/hooks/useOutsideDetect';
 
@@ -30,7 +29,7 @@ const links = [
     },
 ];
 
-const Sidebar: FC = () => {
+const MobileSidebar: FC = () => {
     const router = useRouter();
     const { user } = useUser();
 
@@ -38,15 +37,9 @@ const Sidebar: FC = () => {
 
     const [openSidebar, setOpenSidebar] = useState(false);
 
-    const windowSize = useWindowSize();
-
-    useEffect(() => {
-        if (windowSize.width && windowSize.width > 1024) {
-            setOpenSidebar(true);
-        } else {
-            setOpenSidebar(false);
-        }
-    }, [windowSize]);
+    const handleOutsideClick = () => {
+        setOpenSidebar(false);
+    };
 
     const logout = async (): Promise<void> => {
         await mutateAsync();
@@ -54,7 +47,12 @@ const Sidebar: FC = () => {
     };
 
     return (
-        <OutsideDetecter callback={() => setOpenSidebar(false)}>
+        <OutsideDetecter
+            callback={() => {
+                console.log('HEY');
+                handleOutsideClick();
+            }}
+        >
             <button
                 onClick={() => setOpenSidebar(!openSidebar)}
                 className="md:hidden btn btn-primary btn-circle absolute bottom-4 right-4"
@@ -125,4 +123,4 @@ const Sidebar: FC = () => {
     );
 };
 
-export default Sidebar;
+export default MobileSidebar;

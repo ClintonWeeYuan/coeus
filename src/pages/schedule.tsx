@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import Layout from '@/components/Layout';
+import Layout from '@/components/Layout/Layout';
 import { NextPageWithLayout } from '@/pages/_app';
 import Header from '@/components/schedule/Header';
 import CreateClassModal from '@/components/schedule/CreateClassModal';

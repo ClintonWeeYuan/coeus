@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import Layout from '@/components/Layout';
+import Layout from '@/components/Layout/Layout';
 import { NextPageWithLayout } from '@/pages/_app';
 
 const Home: NextPageWithLayout = () => {
