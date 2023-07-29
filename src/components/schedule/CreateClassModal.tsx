@@ -57,14 +57,11 @@ const CreateClassForm: FC = () => {
 
     const { mutate } = trpc.class.createClass.useMutation();
     const onSubmit: SubmitHandler<FormValues> = (data) => {
-        console.log(user?.id);
-        console.log(data);
         data.owner = user?.id || '';
         // const now = new Date();
         const newClassData: ClassType = {
             ...data,
         };
-        // console.log(newClassData);
         mutate(newClassData);
     };
 
@@ -76,7 +73,7 @@ const CreateClassForm: FC = () => {
                     <input
                         type="text"
                         placeholder="Enter name of class here..."
-                        className="input input-ghost w-full text-3xl max-w-sm"
+                        className="w-full text-3xl max-w-sm border-0 ring-0 focus:ring-0"
                         {...register('name', { required: true })}
                     />
                     {errors.name && (
@@ -117,10 +114,7 @@ const CreateClassForm: FC = () => {
                     <span>Reminder</span>
                 </label>
                 <select {...register('alert')} className="custom-select">
-                    <option disabled selected>
-                        None
-                    </option>
-                    <option>5 minutes</option>
+                    <option selected>5 minutes</option>
                     <option>1 day</option>
                 </select>
                 <label className="label">
@@ -128,7 +122,7 @@ const CreateClassForm: FC = () => {
                 </label>
                 <input
                     type="text"
-                    placeholder="Type here"
+                    placeholder="http://zoom.com/room-code"
                     className="custom-select"
                     {...register('link', { required: true })}
                 />
