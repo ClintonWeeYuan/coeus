@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -9,6 +9,7 @@ import { AiFillSchedule } from 'react-icons/ai';
 import useUser from '@/components/hooks/useUser';
 import { trpc } from '@/utils/trpc';
 import { CgMenu } from 'react-icons/cg';
+import { useWindowSize } from '@/components/hooks/useWindowSize';
 
 const links = [
     {
@@ -36,6 +37,16 @@ const Sidebar: FC = () => {
 
     const [openSidebar, setOpenSidebar] = useState(false);
 
+    const windowSize = useWindowSize();
+
+    useEffect(() => {
+        if (windowSize.width && windowSize.width > 1024) {
+            setOpenSidebar(true);
+        } else {
+            setOpenSidebar(false);
+        }
+    }, [windowSize]);
+
     const logout = async (): Promise<void> => {
         await mutateAsync();
         console.log('Hello There');
@@ -57,9 +68,9 @@ const Sidebar: FC = () => {
                         animate={{ x: 0 }}
                         exit={{ x: -400 }}
                         transition={{ ease: 'linear' }}
-                        className="top-0 fixed left-0 z-20 h-full bg-primary-medium w-3/5 md:w-1/3 lg:w-1/5"
+                        className="top-0 fixed left-0 z-20 h-full bg-secondary-500 w-3/5 md:w-1/3 lg:w-1/5"
                     >
-                        <div className="h-full fixed bg-secondary-500 text-neutral-light py-4 px-4">
+                        <div className="h-full w-full text-neutral-light py-4 px-4">
                             <div className="flex justify-center">
                                 <Image
                                     src="/logo-white-high-res.png"

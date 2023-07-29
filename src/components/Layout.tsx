@@ -1,7 +1,6 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Head from 'next/head';
-import { CgMenu } from 'react-icons/cg';
 
 interface Props {
     children: ReactNode;
@@ -16,6 +15,7 @@ const Layout: FC<Props> = ({ children }) => {
             </Head>
 
             <Sidebar />
+            <div className="hidden md:block md:col-span-1"></div>
 
             <div className="md:col-span-3 py-4 px-4">{children}</div>
         </div>
