@@ -8,8 +8,8 @@ import { RiDashboardFill } from 'react-icons/ri';
 import { AiFillSchedule } from 'react-icons/ai';
 import useUser from '@/components/hooks/useUser';
 import { trpc } from '@/utils/trpc';
-import { CgMenu } from 'react-icons/cg';
 import { useWindowSize } from '@/components/hooks/useWindowSize';
+import MenuIcon from '@/components/common/MenuIcon';
 
 const links = [
     {
@@ -55,13 +55,13 @@ const Sidebar: FC = () => {
 
     return (
         <>
+            <button
+                onClick={() => setOpenSidebar(!openSidebar)}
+                className="md:hidden btn btn-primary btn-circle absolute bottom-4 right-4"
+            >
+                <MenuIcon />
+            </button>
             <AnimatePresence>
-                <button
-                    onClick={() => setOpenSidebar(!openSidebar)}
-                    className="md:hidden btn btn-primary btn-circle absolute bottom-4 right-4"
-                >
-                    <CgMenu />
-                </button>
                 {openSidebar && (
                     <motion.aside
                         initial={{ x: -400 }}
