@@ -16,7 +16,7 @@ const Layout: FC<Props> = ({ children }) => {
             <div className="col-span-1">
                 <Sidebar />
             </div>
-            <div className="col-span-3">{children}</div>
+            <div className="col-span-3 py-4 px-4">{children}</div>
         </div>
     );
 };

@@ -6,7 +6,6 @@ export const newClassSchema = z.object({
     name: z.string().nonempty(defaultRequireMessage),
     type: z.string().nonempty(defaultRequireMessage),
     startTime: z.date(),
-    endTime: z.date(),
     alert: z.string(),
     link: z.string(),
 });

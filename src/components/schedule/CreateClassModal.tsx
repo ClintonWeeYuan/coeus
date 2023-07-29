@@ -2,49 +2,50 @@ import { FC } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import useUser from '@/components/hooks/useUser';
 import { trpc } from '@/utils/trpc';
-import { ClassType } from '@/lib/validationSchema';
+import { ClassType, newClassSchema } from '@/lib/validationSchema';
 import CustomDatePicker from '@/components/common/DatePicker';
+import { GrAdd } from 'react-icons/gr';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { classDefaultValues } from '@/lib/defaultValues';
 
 const CreateClassModal: FC = () => {
     return (
-        <>
+        <div className="flex justify-end w-full">
             {/* The button to open modal */}
-            <label htmlFor="my_modal_6" className="btn btn-accent">
-                Add Class
+            <label htmlFor="my_modal_6" className="btn btn-circle btn-accent">
+                <GrAdd />
             </label>
 
             {/* Put this part before </body> tag */}
             <input type="checkbox" id="my_modal_6" className="modal-toggle" />
             <div className="modal">
-                <div className="modal-box">
+                <div className="modal-box overflow-visible">
                     <label
                         htmlFor="my_modal_6"
                         className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
                     >
                         ✕
                     </label>
-                    <h3 className="font-bold text-lg mb-4">
-                        Create a New Class!
-                    </h3>
                     <CreateClassForm />
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
 export type FormValues = {
+    owner: string;
     name: string;
     type: string;
     startTime: Date;
-    endTime: Date;
     alert: string;
     link: string;
 };
 
 const CreateClassForm: FC = () => {
     const methods = useForm<ClassType>({
-        // resolver: zodResolver(newClassSchema),
+        resolver: zodResolver(newClassSchema),
+        defaultValues: classDefaultValues,
     });
     const {
         handleSubmit,
@@ -56,11 +57,11 @@ const CreateClassForm: FC = () => {
 
     const { mutate } = trpc.class.createClass.useMutation();
     const onSubmit: SubmitHandler<FormValues> = (data) => {
-        console.log(typeof user?.id);
+        console.log(user?.id);
         console.log(data);
+        data.owner = user?.id || '';
         // const now = new Date();
         const newClassData: ClassType = {
-            owner: user?.id || '',
             ...data,
         };
         // console.log(newClassData);
@@ -70,12 +71,12 @@ const CreateClassForm: FC = () => {
     return (
         <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="flex flex-col px-2">
-                    <label className="label py-0">Name of Class</label>
+                {/* CLASS NAME */}
+                <div className="flex flex-col">
                     <input
                         type="text"
-                        placeholder="Private Math Tutoring with Stuart..."
-                        className="input input-bordered w-full max-w-xs"
+                        placeholder="Enter name of class here..."
+                        className="input input-ghost w-full text-3xl max-w-sm"
                         {...register('name', { required: true })}
                     />
                     {errors.name && (
@@ -84,33 +85,38 @@ const CreateClassForm: FC = () => {
                         </span>
                     )}
                 </div>
+
+                {/* CLASS TYPE */}
                 <label className="label">
                     <span>Type</span>
                 </label>
-                <select
-                    {...register('type')}
-                    className="select select-bordered w-full max-w-xs"
-                >
+                <select {...register('type')} className="custom-select">
                     <option selected>Group</option>
                     <option>Personal</option>
                 </select>
 
-                <label className="label">
+                {/* START DATE */}
+                <label className="label pb-0">
                     <span>Start Time</span>
                 </label>
                 <CustomDatePicker name="startTime" />
 
-                <label className="label">
-                    <span>End Time</span>
-                </label>
-                <CustomDatePicker name="endTime" />
+                {/* STUDENT */}
+                {/*<label className="label">*/}
+                {/*    <span>Student</span>*/}
+                {/*</label>*/}
+                {/*<input*/}
+                {/*    type="text"*/}
+                {/*    placeholder="Type here"*/}
+                {/*    className="custom-select"*/}
+                {/*    {...register('student', { required: true })}*/}
+                {/*/>*/}
+
+                {/* REMINDER */}
                 <label className="label">
                     <span>Reminder</span>
                 </label>
-                <select
-                    {...register('alert')}
-                    className="select select-bordered w-full max-w-xs"
-                >
+                <select {...register('alert')} className="custom-select">
                     <option disabled selected>
                         None
                     </option>
@@ -123,12 +129,12 @@ const CreateClassForm: FC = () => {
                 <input
                     type="text"
                     placeholder="Type here"
-                    className="input input-bordered w-full max-w-xs"
+                    className="custom-select"
                     {...register('link', { required: true })}
                 />
-                <div className="modal-action">
+                <div className="modal-action py-4">
                     <button type="submit" className="btn btn-primary">
-                        Submit
+                        Schedule Class
                     </button>
                 </div>
             </form>

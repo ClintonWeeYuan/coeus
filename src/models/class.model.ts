@@ -12,7 +12,6 @@ export interface IClass {
     type: ClassType;
     name: string;
     startTime: Date;
-    endTime: Date;
     alert: AlertType;
     link: string;
 }
@@ -32,10 +31,6 @@ const classSchema = new Schema<IClass>({
         required: true,
     },
     startTime: {
-        type: Date,
-        required: true,
-    },
-    endTime: {
         type: Date,
         required: true,
     },

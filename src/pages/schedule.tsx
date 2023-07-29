@@ -8,7 +8,6 @@ const Schedule: NextPageWithLayout = () => {
     return (
         <div className="">
             <Header />
-            <p>Schedule</p>
             <CreateClassModal />
         </div>
     );

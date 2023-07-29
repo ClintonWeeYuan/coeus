@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .custom-select {
+        @apply inline-flex justify-start w-full px-3 py-2 text-sm rounded-md text-gray-700 bg-white border border-gray-300 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500
+    }
+}
+
 /* React Datepicker */
 .react-datepicker__input-container input {
     @apply block w-full text-base md:text-sm bg-white border border-gray-300 rounded shadow-sm form-input
@@ -21,6 +27,10 @@
 
 .react-datepicker-right {
     @apply absolute right-0 left-auto top-11 transform-none !important
+}
+
+.react-datepicker__tab-loop {
+    @apply absolute
 }
 
 .react-datepicker__portal {
