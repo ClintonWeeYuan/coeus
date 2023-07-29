@@ -1,34 +1,8 @@
 import React, { FC, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
-import { MdLibraryBooks } from 'react-icons/md';
-import { RiDashboardFill } from 'react-icons/ri';
-import { AiFillSchedule } from 'react-icons/ai';
-import useUser from '@/components/hooks/useUser';
-import { trpc } from '@/utils/trpc';
 import MenuIcon from '@/components/common/MenuIcon';
 import OutsideDetecter from '@/components/hooks/useOutsideDetect';
 import SidebarItems from '@/components/Layout/SidebarItems';
-
-const links = [
-    {
-        name: 'Dashboard',
-        link: '/dashboard',
-        icon: <RiDashboardFill className="text-xl" />,
-    },
-    {
-        name: 'Schedule',
-        link: '/schedule',
-        icon: <AiFillSchedule className="text-xl" />,
-    },
-    {
-        name: 'Homework Assistant',
-        link: '/homework',
-        icon: <MdLibraryBooks className="text-xl" />,
-    },
-];
 
 const MobileSidebar: FC = () => {
     const [openSidebar, setOpenSidebar] = useState(false);

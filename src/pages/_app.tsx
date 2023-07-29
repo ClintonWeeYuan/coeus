@@ -4,7 +4,6 @@ import { NextPage } from 'next';
 import { ReactElement, ReactNode } from 'react';
 import { trpc } from '@/utils/trpc';
 import PrivateRoute from '@/components/PrivateRoute';
-import { Roboto, Inter } from 'next/font/google';
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode;

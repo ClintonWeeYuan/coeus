@@ -1,7 +1,4 @@
-import { FC, Fragment, useState } from 'react';
-import { Listbox, Transition } from '@headlessui/react';
-import { HiChevronUpDown } from 'react-icons/hi2';
-import { HiCheck } from 'react-icons/hi';
+import { FC } from 'react';
 import Select from '@/components/common/Select';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 
