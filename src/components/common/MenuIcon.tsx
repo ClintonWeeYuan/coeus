@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
 const path01Variants = {
@@ -12,14 +12,15 @@ const path02Variants = {
     closed: { d: 'M0 14.5L15 14.5' },
 };
 
-const MenuIcon = () => {
-    const [isOpen, setOpen] = useState(false);
+interface Props {
+    isOpen: boolean;
+}
+const MenuIcon: FC<Props> = ({ isOpen }) => {
     const path01Controls = useAnimation();
     const path02Controls = useAnimation();
 
-    const onClick = async () => {
-        setOpen(!isOpen);
-        if (!isOpen) {
+    const performAnimation = async () => {
+        if (isOpen) {
             await path02Controls.start(path02Variants.moving);
             path01Controls.start(path01Variants.open);
             path02Controls.start(path02Variants.open);
@@ -30,8 +31,12 @@ const MenuIcon = () => {
         }
     };
 
+    useEffect(() => {
+        performAnimation();
+    }, [isOpen]);
+
     return (
-        <button onClick={onClick}>
+        <button>
             <svg width="24" height="24" viewBox="0 0 24 24">
                 <motion.path
                     {...path01Variants.closed}

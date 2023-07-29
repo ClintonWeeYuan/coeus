@@ -10,6 +10,7 @@ import useUser from '@/components/hooks/useUser';
 import { trpc } from '@/utils/trpc';
 import { useWindowSize } from '@/components/hooks/useWindowSize';
 import MenuIcon from '@/components/common/MenuIcon';
+import OutsideDetecter from '@/components/hooks/useOutsideDetect';
 
 const links = [
     {
@@ -49,17 +50,16 @@ const Sidebar: FC = () => {
 
     const logout = async (): Promise<void> => {
         await mutateAsync();
-        console.log('Hello There');
         await router.push('/login');
     };
 
     return (
-        <>
+        <OutsideDetecter callback={() => setOpenSidebar(false)}>
             <button
                 onClick={() => setOpenSidebar(!openSidebar)}
                 className="md:hidden btn btn-primary btn-circle absolute bottom-4 right-4"
             >
-                <MenuIcon />
+                <MenuIcon isOpen={openSidebar} />
             </button>
             <AnimatePresence>
                 {openSidebar && (
@@ -121,7 +121,7 @@ const Sidebar: FC = () => {
                     </motion.aside>
                 )}
             </AnimatePresence>
-        </>
+        </OutsideDetecter>
     );
 };
 
