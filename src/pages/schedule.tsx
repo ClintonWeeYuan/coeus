@@ -2,14 +2,15 @@ import { ReactElement } from 'react';
 import Layout from '@/components/Layout/Layout';
 import { NextPageWithLayout } from '@/pages/_app';
 import Header from '@/components/schedule/Header';
-import CreateClassModal from '@/components/schedule/CreateClassModal';
+import ViewOptions from '@/components/schedule/ViewOptions';
 
 const Schedule: NextPageWithLayout = () => {
     return (
-        <div className="">
+        <>
             <Header />
-            <CreateClassModal />
-        </div>
+            <div className="divider"></div>
+            <ViewOptions />
+        </>
     );
 };
 

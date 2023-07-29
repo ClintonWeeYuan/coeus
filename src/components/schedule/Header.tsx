@@ -1,23 +1,16 @@
 import { FC } from 'react';
-import { AiFillSchedule } from 'react-icons/ai';
+import CreateClassModal from '@/components/schedule/CreateClassModal';
 
 const Header: FC = () => {
     return (
-        <div className="flex items-center py-4 px-4">
-            <AiFillSchedule className="text-secondary-500 text-3xl" />
-            <p className="text-xl ml-2">Schedule</p>
-
-            <div className="flex items-center ml-8 text-gray-400 text-sm font-semibold">
-                <p className="px-4 cursor-pointer hover:text-primary-500">
-                    List
+        <div className="flex items-center justify-between py-4 px-4">
+            <div className="flex flex-col md:flex-row md:items-center">
+                <p className="text-xl md:text-2xl font-bold mr-2 md:mr-8">
+                    Week of July 31, 2023
                 </p>
-                <p className="px-4 cursor-pointer hover:text-primary-500">
-                    Weekly
-                </p>
-                <p className="px-4 cursor-pointer hover:text-primary-500">
-                    Monthly
-                </p>
+                <p className="text-md text-gray-400 font-semibold">0 classes</p>
             </div>
+            <CreateClassModal />
         </div>
     );
 };

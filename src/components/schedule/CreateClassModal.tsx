@@ -10,7 +10,7 @@ import { classDefaultValues } from '@/lib/defaultValues';
 
 const CreateClassModal: FC = () => {
     return (
-        <div className="flex justify-end w-full">
+        <div className="flex justify-end">
             {/* The button to open modal */}
             <label htmlFor="my_modal_6" className="btn btn-circle btn-accent">
                 <GrAdd />
@@ -73,7 +73,7 @@ const CreateClassForm: FC = () => {
                     <input
                         type="text"
                         placeholder="Enter name of class here..."
-                        className="w-full text-3xl max-w-sm border-0 ring-0 focus:ring-0"
+                        className="w-full text-2xl md:text-3xl max-w-sm border-0 ring-0 focus:ring-0"
                         {...register('name', { required: true })}
                     />
                     {errors.name && (
