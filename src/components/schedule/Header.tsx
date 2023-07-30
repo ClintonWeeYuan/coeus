@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 interface Props {
     currentDate: Date;
     currentView: string;
+    classCount: number;
 }
 
 const dateFormats: { [key: string]: string } = {
@@ -13,7 +14,7 @@ const dateFormats: { [key: string]: string } = {
     month: 'MMMM YYYY',
 };
 
-const Header: FC<Props> = ({ currentDate, currentView }) => {
+const Header: FC<Props> = ({ currentDate, currentView, classCount }) => {
     const [display, setDisplay] = useState(
         dayjs(currentDate).format('MMMM YYYY'),
     );
@@ -27,7 +28,9 @@ const Header: FC<Props> = ({ currentDate, currentView }) => {
                 <p className="text-xl md:text-2xl font-bold mr-2 md:mr-8">
                     {display}
                 </p>
-                <p className="text-md text-gray-400 font-semibold">0 classes</p>
+                <p className="text-md text-gray-400 font-semibold">
+                    {classCount} classes
+                </p>
             </div>
             <CreateClassModal />
         </div>

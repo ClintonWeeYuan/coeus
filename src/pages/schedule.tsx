@@ -6,15 +6,33 @@ import ViewOptions from '@/components/schedule/ViewOptions';
 import MonthSchedule from '@/components/schedule/MonthSchedule';
 import WeekSchedule from '@/components/schedule/WeekSchedule';
 import DaySchedule from '@/components/schedule/DaySchedule';
+import { trpc } from '@/utils/trpc';
+import useUser from '@/components/hooks/useUser';
 
 const Schedule: NextPageWithLayout = () => {
     const [currentDate, setCurrentDate] = useState<Date>(new Date());
-    const [currentView, setCurrentView] = useState<string>('month');
+    const [currentView, setCurrentView] = useState<string>('day');
+    const { user } = useUser();
 
-    const handleDateChange = (sign: number, type: string) => {
-        if (type == 'month') {
-            const newDate = new Date(currentDate.getTime());
+    const { data } = trpc.class.getClasses.useQuery({
+        date: currentDate,
+        owner: user?.id || '',
+        type: currentView,
+    });
+    console.log(data);
+
+    const handleDateChange = (sign: number) => {
+        if (currentView == 'month') {
+            const newDate: Date = new Date(currentDate.getTime());
             newDate.setMonth(currentDate.getMonth() + sign);
+            setCurrentDate(newDate);
+        } else if (currentView == 'day') {
+            const newDate: Date = new Date(currentDate.getTime());
+            newDate.setDate(currentDate.getDate() + sign);
+            setCurrentDate(newDate);
+        } else if (currentView == 'week') {
+            const newDate: Date = new Date(currentDate.getTime());
+            newDate.setDate(currentDate.getDate() + 7 * sign);
             setCurrentDate(newDate);
         }
     };
@@ -25,7 +43,11 @@ const Schedule: NextPageWithLayout = () => {
 
     return (
         <>
-            <Header currentView={currentView} currentDate={currentDate} />
+            <Header
+                classCount={data?.length || 0}
+                currentView={currentView}
+                currentDate={currentDate}
+            />
             <div className="divider"></div>
             <ViewOptions
                 changeCurrentView={handleViewChange}
@@ -33,7 +55,7 @@ const Schedule: NextPageWithLayout = () => {
             />
             <div className=" flex justify-center">
                 {currentView == 'month' ? (
-                    <MonthSchedule currentDate={currentDate} />
+                    <MonthSchedule data={data} currentDate={currentDate} />
                 ) : currentView == 'week' ? (
                     <WeekSchedule />
                 ) : (

@@ -3,7 +3,7 @@ import Select from '@/components/common/Select';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 
 interface Props {
-    changeDate: (sign: number, type: string) => void;
+    changeDate: (sign: number) => void;
     changeCurrentView: (view: string) => void;
 }
 
@@ -18,7 +18,7 @@ const ViewOptions: FC<Props> = ({ changeDate, changeCurrentView }) => {
         <div className="w-full flex justify-around mb-4">
             <div className="flex items-center">
                 <button
-                    onClick={() => changeDate(-1, 'month')}
+                    onClick={() => changeDate(-1)}
                     type="button"
                     className="btn btn-circle btn-ghost active:bg-gray-400"
                 >
@@ -26,7 +26,7 @@ const ViewOptions: FC<Props> = ({ changeDate, changeCurrentView }) => {
                 </button>
                 <p className="text-lg px-2 md:px-4">Today</p>
                 <button
-                    onClick={() => changeDate(1, 'month')}
+                    onClick={() => changeDate(1)}
                     type="button"
                     className="btn btn-circle btn-ghost active:bg-gray-400"
                 >
