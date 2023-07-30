@@ -20,7 +20,7 @@ const ViewOptions: FC<Props> = ({ changeDate, changeCurrentView }) => {
                 <button
                     onClick={() => changeDate(-1, 'month')}
                     type="button"
-                    className="btn btn-circle btn-ghost"
+                    className="btn btn-circle btn-ghost active:bg-gray-400"
                 >
                     <BsChevronLeft />
                 </button>
@@ -28,7 +28,7 @@ const ViewOptions: FC<Props> = ({ changeDate, changeCurrentView }) => {
                 <button
                     onClick={() => changeDate(1, 'month')}
                     type="button"
-                    className="btn btn-circle btn-ghost"
+                    className="btn btn-circle btn-ghost active:bg-gray-400"
                 >
                     <BsChevronRight />
                 </button>
