@@ -9,13 +9,19 @@ interface Option {
 }
 interface Props {
     options: Option[];
+    onChange?: (view: string) => void;
 }
 
-const Select: FC<Props> = ({ options }) => {
+const Select: FC<Props> = ({ options, onChange }) => {
     const [selectedOption, setSelectedOption] = useState(options[0]);
 
+    const handleChange = (option: Option) => {
+        onChange && onChange(option.value);
+        setSelectedOption(option);
+    };
+
     return (
-        <Listbox value={selectedOption} onChange={setSelectedOption}>
+        <Listbox value={selectedOption} onChange={handleChange}>
             <div className="relative mt-1">
                 <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-gray-200 py-2 pl-3 pr-10 text-left focus:outline-none sm:text-sm">
                     <span className="block truncate">
@@ -34,7 +40,7 @@ const Select: FC<Props> = ({ options }) => {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Listbox.Options className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                         {options.map((option, index) => (
                             <Listbox.Option
                                 key={index}

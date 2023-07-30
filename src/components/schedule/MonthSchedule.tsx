@@ -1,24 +1,37 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 
 const DAYS = ['MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT', 'SUN'];
-const MonthSchedule: FC = () => {
-    const today = new Date();
-    const months = today.getMonth() + 1;
-    const year: number = today.getFullYear();
-    const numberOfDaysInMonth = new Date(months, year, 0).getDate();
-    const numberOfDaysInPrevMonth = new Date(months - 1, year, 0).getDate();
 
-    const firstDayDate = today;
-    firstDayDate.setDate(1);
-    const firstDay = firstDayDate.getDay();
+interface Props {
+    currentDate: Date;
+}
+const MonthSchedule: FC<Props> = ({ currentDate }) => {
+    const numberOfDaysInMonth = useMemo(() => {
+        const months = currentDate.getMonth() + 1;
+        const year: number = currentDate.getFullYear();
+        return new Date(months, year, 0).getDate();
+    }, [currentDate]);
+
+    const numberOfDaysInPrevMonth = useMemo(() => {
+        const months = currentDate.getMonth();
+        const year: number = currentDate.getFullYear();
+        return new Date(months, year, 0).getDate();
+    }, [currentDate]);
+
+    const ALLDATES = useMemo(() => {
+        const firstDayDate = currentDate;
+        firstDayDate.setDate(1);
+        let firstDay = firstDayDate.getDay();
+        if (firstDay == 0) firstDay = 7;
+
+        return [...Array.from(Array(43).keys()).slice(1)].map(
+            (value) => value - firstDay + 1,
+        );
+    }, [currentDate]);
 
     const isValidDate = (date: number): boolean => {
         return date > 0 && date <= numberOfDaysInMonth;
     };
-
-    const ALLDATES: number[] = [...Array.from(Array(43).keys()).slice(1)].map(
-        (value) => value - firstDay + 1,
-    );
 
     const formatDate = (date: number) => {
         if (date > numberOfDaysInMonth) return date - numberOfDaysInMonth;

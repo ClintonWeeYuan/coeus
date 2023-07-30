@@ -23,14 +23,14 @@ const inter = Inter({
 const Layout: FC<Props> = ({ children }) => {
     return (
         <div
-            className={`h-screen md:grid md:grid-cols-5 md:gap-0 ${inter.variable} ${roboto.className}`}
+            className={`h-screen md:grid md:grid-cols-12 md:gap-0 ${inter.variable} ${roboto.className}`}
         >
             <Head>
                 <link rel="icon" href="/favicon.ico" sizes="any" />
                 <title>Coeus</title>
             </Head>
 
-            <div className="hidden md:block">
+            <div className="hidden md:block md:col-span-3">
                 <Sidebar />
             </div>
 
@@ -38,7 +38,7 @@ const Layout: FC<Props> = ({ children }) => {
                 <MobileSidebar />
             </div>
 
-            <div className="md:col-span-4 py-4 px-4">{children}</div>
+            <div className="md:col-span-9 py-4 px-4">{children}</div>
         </div>
     );
 };
