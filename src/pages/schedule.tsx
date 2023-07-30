@@ -3,6 +3,7 @@ import Layout from '@/components/Layout/Layout';
 import { NextPageWithLayout } from '@/pages/_app';
 import Header from '@/components/schedule/Header';
 import ViewOptions from '@/components/schedule/ViewOptions';
+import MonthSchedule from '@/components/schedule/MonthSchedule';
 
 const Schedule: NextPageWithLayout = () => {
     return (
@@ -10,6 +11,7 @@ const Schedule: NextPageWithLayout = () => {
             <Header />
             <div className="divider"></div>
             <ViewOptions />
+            <MonthSchedule />
         </>
     );
 };

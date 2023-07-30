@@ -10,7 +10,7 @@ const ViewOptions: FC = () => {
     ];
 
     return (
-        <div className="w-full flex justify-around">
+        <div className="w-full flex justify-around mb-4">
             <div className="flex items-center">
                 <button type="button" className="btn btn-circle btn-ghost">
                     <BsChevronLeft />

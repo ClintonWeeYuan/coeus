@@ -14,13 +14,12 @@ const MobileSidebar: FC = () => {
     return (
         <OutsideDetecter
             callback={() => {
-                console.log('HEY');
                 handleOutsideClick();
             }}
         >
             <button
                 onClick={() => setOpenSidebar(!openSidebar)}
-                className="md:hidden btn btn-primary btn-circle absolute bottom-4 right-4"
+                className="md:hidden btn btn-primary z-20 btn-circle absolute bottom-4 right-4"
             >
                 <MenuIcon isOpen={openSidebar} />
             </button>
