@@ -6,9 +6,9 @@ interface Props {
 }
 const MonthEventBlock: FC<Props> = ({ currentClass }) => {
     return (
-        <>
-            <p className="text-xs bg-primary-500 mb-1">{currentClass.name}</p>
-        </>
+        <p className="w-full bg-primary-500 text-xs mb-1">
+            {currentClass.name}
+        </p>
     );
 };
 

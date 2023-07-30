@@ -63,12 +63,12 @@ const MonthSchedule: FC<Props> = ({ currentDate, data }) => {
     };
 
     return (
-        <div>
+        <div className="overflow-scroll">
             <table className="table-auto">
                 <thead>
                     <tr>
                         {DAYS.map((day) => (
-                            <th className="w-32 py-4 border" key={day}>
+                            <th className="py-4 border" key={day}>
                                 {day}
                             </th>
                         ))}
@@ -87,8 +87,8 @@ const MonthSchedule: FC<Props> = ({ currentDate, data }) => {
                                         } relative`}
                                         key={day}
                                     >
-                                        <div className="h-24 overflow-hidden">
-                                            <p className="">
+                                        <div className="h-24 w-24 md:w-32 overflow-hidden">
+                                            <p className="pl-1">
                                                 {formatDate(currentDate)}
                                             </p>
                                             {CLASSDATA[currentDate] &&
