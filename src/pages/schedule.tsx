@@ -4,7 +4,7 @@ import { NextPageWithLayout } from '@/pages/_app';
 import Header from '@/components/schedule/Header';
 import ViewOptions from '@/components/schedule/ViewOptions';
 import MonthSchedule from '@/components/schedule/MonthSchedule';
-import WeekSchedule from '@/components/schedule/WeekSchedule';
+import WeekSchedule from '@/components/schedule/Week/WeekSchedule';
 import DaySchedule from '@/components/schedule/DaySchedule';
 import { trpc } from '@/utils/trpc';
 import useUser from '@/components/hooks/useUser';
@@ -57,7 +57,7 @@ const Schedule: NextPageWithLayout = () => {
                 {currentView == 'month' ? (
                     <MonthSchedule data={data} currentDate={currentDate} />
                 ) : currentView == 'week' ? (
-                    <WeekSchedule />
+                    <WeekSchedule currentDate={currentDate} />
                 ) : (
                     <DaySchedule />
                 )}

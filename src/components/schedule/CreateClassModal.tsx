@@ -88,7 +88,7 @@ const CreateClassForm: FC = () => {
                     <span>Type</span>
                 </label>
                 <select {...register('type')} className="custom-select">
-                    <option selected>Group</option>
+                    <option>Group</option>
                     <option>Personal</option>
                 </select>
 

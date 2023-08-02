@@ -63,7 +63,7 @@ const MonthSchedule: FC<Props> = ({ currentDate, data }) => {
     };
 
     return (
-        <div className="overflow-scroll">
+        <div className="overflow-x-auto">
             <table className="table-auto">
                 <thead>
                     <tr>

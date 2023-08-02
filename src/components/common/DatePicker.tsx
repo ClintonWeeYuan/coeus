@@ -88,11 +88,11 @@ const CustomDatePicker: FC<Props> = ({ name }) => {
                             onChange={(event) => {
                                 onChange(new Date(event.target.value));
                             }}
+                            defaultValue={new Date().toDateString()}
                         >
                             {TIMES.map((time, index) =>
                                 index == 0 ? (
                                     <option
-                                        selected
                                         key={index}
                                         value={setTimeInString(
                                             value,
