@@ -18,10 +18,10 @@ const WeekSchedule: FC<Props> = ({ currentDate }) => {
     }, [currentDate]);
 
     return (
-        <div className="w-full">
+        <div className="w-full overflow-x-auto overflow-y-hidden">
             <p>Week Schedule</p>
 
-            <div className="grid grid-cols-[repeat(15,minmax(50px,300px))] w-full overflow-auto">
+            <div className="grid grid-cols-[repeat(15,minmax(50px,1fr))]">
                 <div className="col-span-1 border border-gray-300">
                     <div className="p-2">
                         <PiClockBold />
@@ -31,7 +31,7 @@ const WeekSchedule: FC<Props> = ({ currentDate }) => {
                             key={item}
                             className="flex justify-end  px-2 py-2 h-32"
                         >
-                            <p>{item}:00</p>
+                            <p>{item + 8}:00</p>
                         </div>
                     ))}
                 </div>
