@@ -21,7 +21,7 @@ const WeekSchedule: FC<Props> = ({ currentDate }) => {
         <div className="w-full">
             <p>Week Schedule</p>
 
-            <div className="grid grid-cols-[repeat(15,minmax(0,1fr))] w-full">
+            <div className="grid grid-cols-[repeat(15,minmax(50px,300px))] w-full overflow-auto">
                 <div className="col-span-1 border border-gray-300">
                     <div className="p-2">
                         <PiClockBold />
