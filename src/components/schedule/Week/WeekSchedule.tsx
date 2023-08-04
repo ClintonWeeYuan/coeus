@@ -3,6 +3,7 @@ import { PiClockBold } from 'react-icons/pi';
 import dayjs from 'dayjs';
 import WeekColumn from '@/components/schedule/Week/WeekColumn';
 import { IClass } from '@/models/class.model';
+import ConfirmClassChangeModal from '@/components/schedule/Week/ConfirmClassChangeModal';
 
 interface Props {
     currentDate: Date;
@@ -47,7 +48,7 @@ const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
                     <div className="p-2">
                         <PiClockBold />
                     </div>
-                    {[...Array.from(Array(10).keys())].map((item) => (
+                    {[...Array.from(Array(12).keys())].map((item) => (
                         <div
                             key={item}
                             className="flex justify-end  px-2 py-2 h-32"
@@ -64,18 +65,20 @@ const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
                         <div className="h-12 flex justify-center items-center">
                             {day}
                         </div>
-                        {[...Array.from(Array(6).keys())].map((item, index) => (
-                            <div key={index}>
-                                <div
-                                    style={{ height: '64px' }}
-                                    className="border-t border-gray-300"
-                                ></div>
-                                <div
-                                    style={{ height: '64px' }}
-                                    className="border-t border-dashed border-gray-300"
-                                ></div>
-                            </div>
-                        ))}
+                        {[...Array.from(Array(12).keys())].map(
+                            (item, index) => (
+                                <div key={index}>
+                                    <div
+                                        style={{ height: '64px' }}
+                                        className="border-t border-gray-300"
+                                    ></div>
+                                    <div
+                                        style={{ height: '64px' }}
+                                        className="border-t border-dashed border-gray-300"
+                                    ></div>
+                                </div>
+                            ),
+                        )}
 
                         <WeekColumn data={CLASSDATA[index]} />
                     </div>

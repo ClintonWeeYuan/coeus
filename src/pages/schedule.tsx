@@ -38,6 +38,15 @@ const Schedule: NextPageWithLayout = () => {
     };
 
     const handleViewChange = (view: string) => {
+        const newDate: Date = new Date(currentDate.getTime());
+        if (view == 'week') {
+            const day = newDate.getDay();
+            newDate.setDate(newDate.getDate() - day + (day === 0 ? -6 : 1));
+        } else if (view == 'month') {
+            newDate.setDate(1);
+        }
+
+        setCurrentDate(newDate);
         setCurrentView(view);
     };
 

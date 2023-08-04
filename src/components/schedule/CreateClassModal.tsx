@@ -62,8 +62,7 @@ const CreateClassForm: FC = () => {
         const newClassData: ClassType = {
             ...data,
         };
-        console.log(newClassData);
-        // mutate(newClassData);
+        mutate(newClassData);
     };
 
     return (

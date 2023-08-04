@@ -31,9 +31,6 @@ const classRouter = router({
                 endDate.setHours(24, 59, 59);
             }
 
-            console.log(startDate);
-            console.log(endDate);
-
             const res = await classModel().find({
                 owner: owner,
                 startTime: { $gte: startDate, $lte: endDate },
