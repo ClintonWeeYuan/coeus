@@ -57,7 +57,7 @@ const Schedule: NextPageWithLayout = () => {
                 {currentView == 'month' ? (
                     <MonthSchedule data={data} currentDate={currentDate} />
                 ) : currentView == 'week' ? (
-                    <WeekSchedule currentDate={currentDate} />
+                    <WeekSchedule data={data} currentDate={currentDate} />
                 ) : (
                     <DaySchedule />
                 )}

@@ -2,11 +2,14 @@ import { FC, useMemo } from 'react';
 import { PiClockBold } from 'react-icons/pi';
 import dayjs from 'dayjs';
 import WeekColumn from '@/components/schedule/Week/WeekColumn';
+import { IClass } from '@/models/class.model';
+
 interface Props {
     currentDate: Date;
+    data: IClass[] | undefined;
 }
 
-const WeekSchedule: FC<Props> = ({ currentDate }) => {
+const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
     const weekList = useMemo(() => {
         const copyOfDate = new Date(currentDate.getTime());
         const res: string[] = [];
@@ -16,6 +19,24 @@ const WeekSchedule: FC<Props> = ({ currentDate }) => {
         }
         return res;
     }, [currentDate]);
+
+    const CLASSDATA: IClass[][] = useMemo(() => {
+        const classDataArray = [
+            ...Array.from({ length: 7 }, (): IClass[] => []),
+        ];
+
+        data?.forEach((value) => {
+            const currentDate = new Date(value.startTime);
+            const dayInWeek = currentDate.getDay()
+                ? currentDate.getDay() - 1
+                : 6;
+            console.log(dayInWeek);
+            classDataArray[dayInWeek].push(value);
+        });
+        console.log(classDataArray);
+
+        return classDataArray;
+    }, [data]);
 
     return (
         <div className="w-full overflow-x-auto overflow-y-hidden">
@@ -35,7 +56,7 @@ const WeekSchedule: FC<Props> = ({ currentDate }) => {
                         </div>
                     ))}
                 </div>
-                {weekList.map((day) => (
+                {weekList.map((day, index) => (
                     <div
                         key={day}
                         className="relative col-span-2 border border-gray-300"
@@ -56,7 +77,7 @@ const WeekSchedule: FC<Props> = ({ currentDate }) => {
                             </div>
                         ))}
 
-                        <WeekColumn />
+                        <WeekColumn data={CLASSDATA[index]} />
                     </div>
                 ))}
             </div>

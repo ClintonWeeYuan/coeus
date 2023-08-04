@@ -4,28 +4,30 @@ import dayjs from 'dayjs';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormValues } from '@/components/schedule/CreateClassModal';
-import { TIMES } from '@/lib/dateTime';
+import { TIMELIST } from '@/lib/dateTime';
 
 interface Props {
     name: 'startTime';
 }
 
 const CustomDatePicker: FC<Props> = ({ name }) => {
-    const { control } = useFormContext<FormValues>();
+    const { control, setValue, getValues } = useFormContext<FormValues>();
 
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        console.log(e.target.value);
+        const time = e.target.value.split(':');
+        const hours = parseInt(time[0]);
+        const minutes = parseInt(time[1]);
+
+        const currentTime = getValues().startTime;
+        const newTime = new Date(currentTime.getTime());
+        newTime.setHours(hours, minutes, 0, 0);
+        setValue('startTime', newTime);
+    };
     const isDateInFuture = (date: Date): boolean => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         return date >= today;
-    };
-
-    const setTimeInString = (
-        date: Date,
-        hours: number,
-        minutes: number,
-    ): string => {
-        date.setHours(hours, minutes, 0, 0);
-        return date.toDateString();
     };
 
     return (
@@ -85,33 +87,17 @@ const CustomDatePicker: FC<Props> = ({ name }) => {
                         />
                         <select
                             className="custom-select"
-                            onChange={(event) => {
-                                onChange(new Date(event.target.value));
-                            }}
-                            defaultValue={new Date().toDateString()}
+                            onChange={(e) => handleChange(e)}
+                            defaultValue={'1230'}
                         >
-                            {TIMES.map((time, index) =>
+                            {TIMELIST.map((time, index) =>
                                 index == 0 ? (
-                                    <option
-                                        key={index}
-                                        value={setTimeInString(
-                                            value,
-                                            time.hours,
-                                            time.minutes,
-                                        )}
-                                    >
-                                        {time.display}
+                                    <option key={index} value={time}>
+                                        {time}
                                     </option>
                                 ) : (
-                                    <option
-                                        key={index}
-                                        value={setTimeInString(
-                                            value,
-                                            time.hours,
-                                            time.minutes,
-                                        )}
-                                    >
-                                        {time.display}
+                                    <option key={index} value={time}>
+                                        {time}
                                     </option>
                                 ),
                             )}
