@@ -7,8 +7,8 @@ export type ClassType = z.infer<typeof ClassEnum>;
 const AlertEnum = z.enum(['5 minutes', '1 day', '2 days', 'morning of']);
 export type AlertType = z.infer<typeof AlertEnum>;
 
-export interface IClass {
-    owner?: mongoose.Schema.Types.ObjectId;
+export interface ClassModel {
+    owner: mongoose.Schema.Types.ObjectId;
     type: ClassType;
     name: string;
     startTime: Date;
@@ -16,7 +16,7 @@ export interface IClass {
     link: string;
 }
 
-const classSchema = new Schema<IClass>({
+const classSchema = new Schema<ClassModel>({
     owner: {
         ref: 'User',
         type: mongoose.Schema.Types.ObjectId,
@@ -46,8 +46,8 @@ const classSchema = new Schema<IClass>({
 
 const classModel = () => {
     return mongoose.models && mongoose.models.Class
-        ? (mongoose.models.Class as mongoose.Model<IClass>)
-        : model<IClass>('Class', classSchema);
+        ? (mongoose.models.Class as mongoose.Model<ClassModel>)
+        : model<ClassModel>('Class', classSchema);
 };
 
 export default classModel;

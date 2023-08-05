@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IClass } from '@/models/class.model';
+import { IClass } from '@/lib/types';
 import Backdrop from '@/components/common/Backdrop';
 import { motion } from 'framer-motion';
 

@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 import { PiClockBold } from 'react-icons/pi';
 import dayjs from 'dayjs';
 import WeekColumn from '@/components/schedule/Week/WeekColumn';
-import { IClass } from '@/models/class.model';
+import { IClass } from '@/lib/types';
 
 interface Props {
     currentDate: Date;
@@ -26,8 +26,7 @@ const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
         ];
 
         data?.forEach((value) => {
-            const currentDate = new Date(value.startTime);
-            const dayInWeek = currentDate.getDay()
+            const dayInWeek = value.startTime.getDay()
                 ? currentDate.getDay() - 1
                 : 6;
             classDataArray[dayInWeek].push(value);

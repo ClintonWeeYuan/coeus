@@ -19,7 +19,6 @@ const Schedule: NextPageWithLayout = () => {
         owner: user?.id || '',
         type: currentView,
     });
-    console.log(data);
 
     const handleDateChange = (sign: number) => {
         if (currentView == 'month') {

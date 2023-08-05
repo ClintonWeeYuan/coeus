@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { IClass } from '@/models/class.model';
+import { IClass } from '@/lib/types';
 import MonthEventBlock from '@/components/schedule/MonthEventBlock';
 
 const DAYS = ['MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT', 'SUN'];
@@ -42,13 +42,10 @@ const MonthSchedule: FC<Props> = ({ currentDate, data }) => {
         ];
 
         data?.forEach((value) => {
-            const currentDate = new Date(value.startTime);
-            const dateInMonth = currentDate.getDate();
-            console.log(dateInMonth);
+            const dateInMonth = value.startTime.getDate();
             classDataArray[dateInMonth].push(value);
         });
 
-        console.log(classDataArray);
         return classDataArray;
     }, [data, numberOfDaysInMonth]);
 
@@ -93,9 +90,9 @@ const MonthSchedule: FC<Props> = ({ currentDate, data }) => {
                                             </p>
                                             {CLASSDATA[currentDate] &&
                                                 CLASSDATA[currentDate].map(
-                                                    (item, index) => (
+                                                    (item) => (
                                                         <MonthEventBlock
-                                                            key={index}
+                                                            key={item.id}
                                                             currentClass={item}
                                                         />
                                                     ),

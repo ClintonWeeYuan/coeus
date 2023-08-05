@@ -2,6 +2,7 @@ import classModel from '@/models/class.model';
 import { procedure, router } from '@/server/trpc';
 import { newClassSchema } from '@/lib/validationSchema';
 import { z } from 'zod';
+import { IClass } from '@/lib/types';
 
 const classRouter = router({
     createClass: procedure.input(newClassSchema).mutation(async ({ input }) => {
@@ -31,13 +32,25 @@ const classRouter = router({
                 endDate.setHours(24, 59, 59);
             }
 
-            const res = await classModel().find({
-                owner: owner,
-                startTime: { $gte: startDate, $lte: endDate },
-            });
+            const res = await classModel()
+                .find({
+                    owner: owner,
+                    startTime: { $gte: startDate, $lte: endDate },
+                })
+                .lean();
 
-            console.log(res);
-            return res;
+            const formattedRes: IClass[] = [];
+
+            for (const classEvent of res) {
+                const { owner, _id, ...others } = classEvent;
+                formattedRes.push({
+                    id: _id.toString(),
+                    owner: owner.toString(),
+                    ...others,
+                });
+            }
+
+            return formattedRes;
         }),
 });
 

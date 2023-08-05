@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IClass } from '@/models/class.model';
+import { IClass } from '@/lib/types';
 
 interface Props {
     currentClass: IClass;

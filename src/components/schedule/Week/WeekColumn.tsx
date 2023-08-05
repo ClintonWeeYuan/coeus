@@ -1,6 +1,6 @@
 import { FC, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { IClass } from '@/models/class.model';
+import { IClass } from '@/lib/types';
 import WeekEvent from '@/components/schedule/Week/WeekEvent';
 
 interface Props {
