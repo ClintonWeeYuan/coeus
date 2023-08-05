@@ -50,7 +50,7 @@ const ConfirmClassChangeModal: FC<Props> = ({
             newDate.getMinutes() + (changeInTimeIncrements % 2) * 30,
         );
         return newDate;
-    }, [changeInTimeIncrements]);
+    }, [changeInTimeIncrements, event.startTime]);
     return (
         <Backdrop onClick={handleClose}>
             <motion.div
