@@ -114,7 +114,7 @@ const CreateClassForm: FC = () => {
                     <span>Reminder</span>
                 </label>
                 <select {...register('alert')} className="custom-select">
-                    <option selected>5 minutes</option>
+                    <option>5 minutes</option>
                     <option>1 day</option>
                 </select>
                 <label className="label">

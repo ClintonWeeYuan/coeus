@@ -33,7 +33,7 @@ const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
         });
 
         return classDataArray;
-    }, [data]);
+    }, [data, currentDate]);
 
     return (
         <div className="w-full overflow-x-auto overflow-y-hidden">

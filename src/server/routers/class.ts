@@ -1,6 +1,6 @@
 import classModel from '@/models/class.model';
 import { procedure, router } from '@/server/trpc';
-import { newClassSchema } from '@/lib/validationSchema';
+import { editClassSchema, newClassSchema } from '@/lib/validationSchema';
 import { z } from 'zod';
 import { IClass } from '@/lib/types';
 
@@ -8,6 +8,19 @@ const classRouter = router({
     createClass: procedure.input(newClassSchema).mutation(async ({ input }) => {
         try {
             await classModel().create(input);
+        } catch (e) {
+            console.log(e);
+        }
+    }),
+    editClass: procedure.input(editClassSchema).mutation(async ({ input }) => {
+        try {
+            console.log(input);
+            await classModel().updateOne(
+                { _id: input.id },
+                {
+                    ...input,
+                },
+            );
         } catch (e) {
             console.log(e);
         }

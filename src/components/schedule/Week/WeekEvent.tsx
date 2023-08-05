@@ -2,6 +2,7 @@ import { FC, MutableRefObject, useRef, useState } from 'react';
 import { AnimatePresence, motion, PanInfo } from 'framer-motion';
 import { IClass } from '@/lib/types';
 import ConfirmClassChangeModal from '@/components/schedule/Week/ConfirmClassChangeModal';
+import { trpc } from '@/utils/trpc';
 
 interface Props {
     columnRef: MutableRefObject<null>;
@@ -10,12 +11,16 @@ interface Props {
 const WeekEvent: FC<Props> = ({ columnRef, event }) => {
     const eventRef = useRef(null);
     const [origin, setOrigin] = useState(
-        (new Date(event.startTime).getHours() - 8) * 64,
+        ((event.startTime.getHours() - 8) * 2 +
+            event.startTime.getMinutes() / 30) *
+            64,
     );
     const [modalOpen, setModalOpen] = useState(false);
-    const snapToEventBlock = (event: MouseEvent, info: PanInfo) => {
+    const { mutateAsync } = trpc.class.editClass.useMutation();
+    const snapToEventBlock = async (e: MouseEvent, info: PanInfo) => {
         setModalOpen(true);
         const blockHeight = 64;
+        const blockTime = 30;
         const threshold = 0.7;
 
         const isPositive = info.offset.y > 0;
@@ -33,9 +38,23 @@ const WeekEvent: FC<Props> = ({ columnRef, event }) => {
             ? numberOfIncrements
             : numberOfIncrements * -1;
 
-        const newOrigin = origin + numberOfIncrements * blockHeight;
+        if (numberOfIncrements != 0) {
+            //Change time in MongoDB
+            const newEvent: IClass = { ...event };
+            newEvent.startTime.setHours(
+                newEvent.startTime.getHours() + numberOfIncrements / 2,
+            );
+            newEvent.startTime.setMinutes(
+                newEvent.startTime.getMinutes() +
+                    (numberOfIncrements % 2) * blockTime,
+            );
 
-        setOrigin(newOrigin < 0 ? 0 : newOrigin);
+            console.log(newEvent.startTime);
+            await mutateAsync(newEvent);
+
+            const newOrigin = origin + numberOfIncrements * blockHeight;
+            setOrigin(newOrigin < 0 ? 0 : newOrigin);
+        }
     };
 
     return (
@@ -63,7 +82,11 @@ const WeekEvent: FC<Props> = ({ columnRef, event }) => {
                 }}
                 className={`absolute bg-primary-500 w-full h-32 hover:cursor-pointer`}
             >
-                {event.name}
+                {event.name +
+                    '-' +
+                    event.startTime.getHours() +
+                    ':' +
+                    event.startTime.getMinutes()}
             </motion.div>
             <AnimatePresence
                 // Disable any initial animations on children that
