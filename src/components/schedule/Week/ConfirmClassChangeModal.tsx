@@ -1,12 +1,15 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { IClass } from '@/lib/types';
 import Backdrop from '@/components/common/Backdrop';
 import { motion } from 'framer-motion';
+import dayjs from 'dayjs';
+import { simpleDateTimeFormat } from '@/lib/dateFormats';
 
 interface Props {
     event: IClass;
     handleClose: () => void;
     updateTime: (isAccept: boolean) => void;
+    changeInTimeIncrements: number;
 }
 const dropIn = {
     hidden: {
@@ -33,11 +36,21 @@ const ConfirmClassChangeModal: FC<Props> = ({
     handleClose,
     event,
     updateTime,
+    changeInTimeIncrements,
 }) => {
     const handleChangeInTime = (isAccept: boolean) => {
         updateTime(isAccept);
         handleClose();
     };
+
+    const newTime = useMemo((): Date => {
+        const newDate = new Date(event.startTime);
+        newDate.setHours(newDate.getHours() + changeInTimeIncrements / 2);
+        newDate.setMinutes(
+            newDate.getMinutes() + (changeInTimeIncrements % 2) * 30,
+        );
+        return newDate;
+    }, [changeInTimeIncrements]);
     return (
         <Backdrop onClick={handleClose}>
             <motion.div
@@ -50,8 +63,15 @@ const ConfirmClassChangeModal: FC<Props> = ({
             >
                 <p className="text-3xl mb-4">Change of Class Time</p>
                 <p className="py-4 mb-2 md:mb-8">
-                    Are you sure you want to change the time for {event.name} to
-                    {new Date(event.startTime).toDateString()}?
+                    Are you sure you want to change the time for {event.name},
+                    from{' '}
+                    <span className="font-bold">
+                        {dayjs(event.startTime).format(simpleDateTimeFormat)}
+                    </span>{' '}
+                    to{' '}
+                    <span className="font-bold">
+                        {dayjs(newTime).format(simpleDateTimeFormat)}
+                    </span>
                 </p>
                 <div className="flex flex-col md:flex-row">
                     <button

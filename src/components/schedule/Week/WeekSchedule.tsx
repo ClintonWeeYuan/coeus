@@ -27,7 +27,7 @@ const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
 
         data?.forEach((value) => {
             const dayInWeek = value.startTime.getDay()
-                ? currentDate.getDay() - 1
+                ? value.startTime.getDay() - 1
                 : 6;
             classDataArray[dayInWeek].push(value);
         });

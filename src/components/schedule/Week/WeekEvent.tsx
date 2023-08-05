@@ -40,6 +40,7 @@ const WeekEvent: FC<Props> = ({ columnRef, event }) => {
 
             await mutateAsync(newEvent);
         } else {
+            //Revert back to original position
             setOrigin(origin - changeInTimeIncrements * blockHeight);
         }
     };
@@ -97,13 +98,9 @@ const WeekEvent: FC<Props> = ({ columnRef, event }) => {
                 style={{
                     top: origin,
                 }}
-                className={`absolute bg-primary-500 w-full h-32 hover:cursor-pointer`}
+                className={`absolute bg-primary-500 w-full h-32 hover:cursor-pointer px-2 py-2`}
             >
-                {event.name +
-                    '-' +
-                    event.startTime.getHours() +
-                    ':' +
-                    event.startTime.getMinutes()}
+                {event.name}
             </motion.div>
             <AnimatePresence
                 // Disable any initial animations on children that
@@ -118,6 +115,7 @@ const WeekEvent: FC<Props> = ({ columnRef, event }) => {
             >
                 {modalOpen && (
                     <ConfirmClassChangeModal
+                        changeInTimeIncrements={changeInTimeIncrements}
                         updateTime={updateTime}
                         handleClose={() => setModalOpen(false)}
                         event={event}

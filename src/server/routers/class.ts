@@ -7,7 +7,8 @@ import { IClass } from '@/lib/types';
 const classRouter = router({
     createClass: procedure.input(newClassSchema).mutation(async ({ input }) => {
         try {
-            await classModel().create(input);
+            const newClass = await classModel().create(input);
+            console.log(newClass);
         } catch (e) {
             console.log(e);
         }
