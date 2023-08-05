@@ -1,6 +1,6 @@
 import { FC, MutableRefObject, useRef, useState } from 'react';
 import { AnimatePresence, motion, PanInfo } from 'framer-motion';
-import { IClass } from '@/models/class.model';
+import { IClass } from '@/lib/types';
 import ConfirmClassChangeModal from '@/components/schedule/Week/ConfirmClassChangeModal';
 
 interface Props {
