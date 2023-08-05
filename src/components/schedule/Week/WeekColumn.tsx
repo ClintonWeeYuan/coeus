@@ -1,5 +1,5 @@
-import { FC, useRef, useState } from 'react';
-import { motion, PanInfo } from 'framer-motion';
+import { FC, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { IClass } from '@/models/class.model';
 import WeekEvent from '@/components/schedule/Week/WeekEvent';
 

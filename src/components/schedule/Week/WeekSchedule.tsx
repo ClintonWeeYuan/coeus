@@ -3,7 +3,6 @@ import { PiClockBold } from 'react-icons/pi';
 import dayjs from 'dayjs';
 import WeekColumn from '@/components/schedule/Week/WeekColumn';
 import { IClass } from '@/models/class.model';
-import ConfirmClassChangeModal from '@/components/schedule/Week/ConfirmClassChangeModal';
 
 interface Props {
     currentDate: Date;
@@ -31,10 +30,8 @@ const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
             const dayInWeek = currentDate.getDay()
                 ? currentDate.getDay() - 1
                 : 6;
-            console.log(dayInWeek);
             classDataArray[dayInWeek].push(value);
         });
-        console.log(classDataArray);
 
         return classDataArray;
     }, [data]);
