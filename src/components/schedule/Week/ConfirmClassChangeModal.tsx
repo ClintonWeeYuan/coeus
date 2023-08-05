@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 interface Props {
     event: IClass;
     handleClose: () => void;
+    updateTime: (isAccept: boolean) => void;
 }
 const dropIn = {
     hidden: {
@@ -28,7 +29,15 @@ const dropIn = {
     },
 };
 
-const ConfirmClassChangeModal: FC<Props> = ({ handleClose, event }) => {
+const ConfirmClassChangeModal: FC<Props> = ({
+    handleClose,
+    event,
+    updateTime,
+}) => {
+    const handleChangeInTime = (isAccept: boolean) => {
+        updateTime(isAccept);
+        handleClose();
+    };
     return (
         <Backdrop onClick={handleClose}>
             <motion.div
@@ -47,11 +56,14 @@ const ConfirmClassChangeModal: FC<Props> = ({ handleClose, event }) => {
                 <div className="flex flex-col md:flex-row">
                     <button
                         className="btn btn-primary md:mr-4"
-                        onClick={handleClose}
+                        onClick={() => handleChangeInTime(true)}
                     >
                         Confirm
                     </button>
-                    <button className="btn btn-ghost" onClick={handleClose}>
+                    <button
+                        className="btn btn-ghost"
+                        onClick={() => handleChangeInTime(false)}
+                    >
                         No, I changed my mind
                     </button>
                 </div>

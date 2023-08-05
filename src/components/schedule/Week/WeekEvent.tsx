@@ -8,6 +8,13 @@ interface Props {
     columnRef: MutableRefObject<null>;
     event: IClass;
 }
+
+//Height of one block, in pixels
+const blockHeight = 64;
+
+//Number of minutes in one block
+const blockTime = 30;
+
 const WeekEvent: FC<Props> = ({ columnRef, event }) => {
     const eventRef = useRef(null);
     const [origin, setOrigin] = useState(
@@ -15,12 +22,31 @@ const WeekEvent: FC<Props> = ({ columnRef, event }) => {
             event.startTime.getMinutes() / 30) *
             64,
     );
+    const [changeInTimeIncrements, setChangeInTimeIncrements] = useState(0);
     const [modalOpen, setModalOpen] = useState(false);
     const { mutateAsync } = trpc.class.editClass.useMutation();
+
+    const updateTime = async (isAccept: boolean) => {
+        if (isAccept) {
+            //Set Hours and Minutes for startTime to new value
+            const newEvent: IClass = { ...event };
+            newEvent.startTime.setHours(
+                newEvent.startTime.getHours() + changeInTimeIncrements / 2,
+            );
+            newEvent.startTime.setMinutes(
+                newEvent.startTime.getMinutes() +
+                    (changeInTimeIncrements % 2) * blockTime,
+            );
+
+            await mutateAsync(newEvent);
+        } else {
+            setOrigin(origin - changeInTimeIncrements * blockHeight);
+        }
+    };
+
     const snapToEventBlock = async (e: MouseEvent, info: PanInfo) => {
         setModalOpen(true);
-        const blockHeight = 64;
-        const blockTime = 30;
+
         const threshold = 0.7;
 
         const isPositive = info.offset.y > 0;
@@ -38,19 +64,10 @@ const WeekEvent: FC<Props> = ({ columnRef, event }) => {
             ? numberOfIncrements
             : numberOfIncrements * -1;
 
+        setChangeInTimeIncrements(numberOfIncrements);
+
         if (numberOfIncrements != 0) {
             //Change time in MongoDB
-            const newEvent: IClass = { ...event };
-            newEvent.startTime.setHours(
-                newEvent.startTime.getHours() + numberOfIncrements / 2,
-            );
-            newEvent.startTime.setMinutes(
-                newEvent.startTime.getMinutes() +
-                    (numberOfIncrements % 2) * blockTime,
-            );
-
-            console.log(newEvent.startTime);
-            await mutateAsync(newEvent);
 
             const newOrigin = origin + numberOfIncrements * blockHeight;
             setOrigin(newOrigin < 0 ? 0 : newOrigin);
@@ -101,6 +118,7 @@ const WeekEvent: FC<Props> = ({ columnRef, event }) => {
             >
                 {modalOpen && (
                     <ConfirmClassChangeModal
+                        updateTime={updateTime}
                         handleClose={() => setModalOpen(false)}
                         event={event}
                     />
