@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import { IClass } from '@/lib/types';
 import Backdrop from '@/components/common/Backdrop';
 import { motion } from 'framer-motion';
@@ -9,7 +9,7 @@ interface Props {
     event: IClass;
     handleClose: () => void;
     updateTime: (isAccept: boolean) => void;
-    changeInTimeIncrements: number;
+    newDate: Date;
 }
 const dropIn = {
     hidden: {
@@ -36,21 +36,13 @@ const ConfirmClassChangeModal: FC<Props> = ({
     handleClose,
     event,
     updateTime,
-    changeInTimeIncrements,
+    newDate,
 }) => {
     const handleChangeInTime = (isAccept: boolean) => {
         updateTime(isAccept);
         handleClose();
     };
 
-    const newTime = useMemo((): Date => {
-        const newDate = new Date(event.startTime);
-        newDate.setHours(newDate.getHours() + changeInTimeIncrements / 2);
-        newDate.setMinutes(
-            newDate.getMinutes() + (changeInTimeIncrements % 2) * 30,
-        );
-        return newDate;
-    }, [changeInTimeIncrements, event.startTime]);
     return (
         <Backdrop onClick={handleClose}>
             <motion.div
@@ -70,7 +62,7 @@ const ConfirmClassChangeModal: FC<Props> = ({
                     </span>{' '}
                     to{' '}
                     <span className="font-bold">
-                        {dayjs(newTime).format(simpleDateTimeFormat)}
+                        {dayjs(newDate).format(simpleDateTimeFormat)}
                     </span>
                 </p>
                 <div className="flex flex-col md:flex-row">

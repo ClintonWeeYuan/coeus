@@ -1,77 +1,97 @@
-import { FC, MutableRefObject, useRef, useState } from 'react';
+import { FC, MutableRefObject, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, PanInfo } from 'framer-motion';
-import { IClass } from '@/lib/types';
+import { Coordinates, IClass } from '@/lib/types';
 import ConfirmClassChangeModal from '@/components/schedule/Week/ConfirmClassChangeModal';
 import { trpc } from '@/utils/trpc';
+import { calculateNumberOfIncrements } from '@/utils/weekScheduleDrapAndDrop';
+import dayjs from 'dayjs';
+import { simpleDateTimeFormat } from '@/lib/dateFormats';
 
 interface Props {
-    columnRef: MutableRefObject<null>;
+    containerRef: MutableRefObject<null>;
     event: IClass;
 }
 
 //Height of one block, in pixels
 const blockHeight = 64;
 
+//Width of one block, in pixels
+const blockWidth = 120;
+
 //Number of minutes in one block
 const blockTime = 30;
 
-const WeekEvent: FC<Props> = ({ columnRef, event }) => {
+const WeekEvent: FC<Props> = ({ containerRef, event }) => {
     const eventRef = useRef(null);
-    const [origin, setOrigin] = useState(
-        ((event.startTime.getHours() - 8) * 2 +
-            event.startTime.getMinutes() / 30) *
+
+    const [coordinates, setCoordinates] = useState<Coordinates>({
+        x: (event.startTime.getDay() ? event.startTime.getDay() - 1 : 6) * 120,
+        y:
+            ((event.startTime.getHours() - 8) * 2 +
+                event.startTime.getMinutes() / 30) *
             64,
-    );
-    const [changeInTimeIncrements, setChangeInTimeIncrements] = useState(0);
+    });
+    const [newDate, setNewDate] = useState<Date>(new Date());
+
+    const [changeInTimeIncrementsX, setChangeInTimeIncrementsX] = useState(0);
+    const [changeInTimeIncrementsY, setChangeInTimeIncrementsY] = useState(0);
     const [modalOpen, setModalOpen] = useState(false);
     const { mutateAsync } = trpc.class.editClass.useMutation();
 
+    useEffect(() => {}, [coordinates]);
+
     const updateTime = async (isAccept: boolean) => {
         if (isAccept) {
-            //Set Hours and Minutes for startTime to new value
+            //Set event's start time to new date
             const newEvent: IClass = { ...event };
-            newEvent.startTime.setHours(
-                newEvent.startTime.getHours() + changeInTimeIncrements / 2,
-            );
-            newEvent.startTime.setMinutes(
-                newEvent.startTime.getMinutes() +
-                    (changeInTimeIncrements % 2) * blockTime,
-            );
+            newEvent.startTime = newDate;
 
             await mutateAsync(newEvent);
         } else {
             //Revert back to original position
-            setOrigin(origin - changeInTimeIncrements * blockHeight);
+            const oldCoordinates: Coordinates = {
+                x: coordinates.x - changeInTimeIncrementsX * blockWidth,
+                y: coordinates.y - changeInTimeIncrementsY * blockHeight,
+            };
+
+            setCoordinates(oldCoordinates);
         }
     };
 
     const snapToEventBlock = async (e: MouseEvent, info: PanInfo) => {
-        setModalOpen(true);
-
-        const threshold = 0.7;
-
-        const isPositive = info.offset.y > 0;
-
-        let numberOfIncrements = Math.floor(
-            Math.abs(info.offset.y / blockHeight),
+        const numberOfIncrementsY = calculateNumberOfIncrements(
+            info.offset.y,
+            blockHeight,
         );
-        const leftOver =
-            Math.abs(info.offset.y % blockHeight) >= threshold * blockHeight
-                ? 1
-                : 0;
-        numberOfIncrements += leftOver;
 
-        numberOfIncrements = isPositive
-            ? numberOfIncrements
-            : numberOfIncrements * -1;
+        const numberOfIncrementsX = calculateNumberOfIncrements(
+            info.offset.x,
+            blockWidth,
+        );
 
-        setChangeInTimeIncrements(numberOfIncrements);
+        setChangeInTimeIncrementsX(numberOfIncrementsX);
+        setChangeInTimeIncrementsY(numberOfIncrementsY);
 
-        if (numberOfIncrements != 0) {
-            //Change time in MongoDB
+        if (numberOfIncrementsX != 0 || numberOfIncrementsY != 0) {
+            setModalOpen(true);
 
-            const newOrigin = origin + numberOfIncrements * blockHeight;
-            setOrigin(newOrigin < 0 ? 0 : newOrigin);
+            //Set New Y Coordinates
+            const newCoordinates = {
+                x: coordinates.x + numberOfIncrementsX * blockWidth,
+                y: coordinates.y + numberOfIncrementsY * blockHeight,
+            };
+
+            setCoordinates(newCoordinates);
+
+            //Set new date, which will be used to update mongodb
+            const updatedDate: Date = new Date(event.startTime);
+            updatedDate.setDate(updatedDate.getDate() + numberOfIncrementsX);
+
+            updatedDate.setMinutes(
+                updatedDate.getMinutes() + numberOfIncrementsY * blockTime,
+            );
+
+            setNewDate(updatedDate);
         }
     };
 
@@ -79,9 +99,10 @@ const WeekEvent: FC<Props> = ({ columnRef, event }) => {
         <>
             <motion.div
                 ref={eventRef}
-                drag="y"
-                dragConstraints={columnRef}
+                drag={true}
+                dragConstraints={containerRef}
                 dragMomentum={false}
+                dragElastic={0}
                 initial={false}
                 dragTransition={{
                     bounceStiffness: 9000,
@@ -96,11 +117,14 @@ const WeekEvent: FC<Props> = ({ columnRef, event }) => {
                 dragSnapToOrigin={true}
                 onDragEnd={snapToEventBlock}
                 style={{
-                    top: origin,
+                    top: `${coordinates.y}px`,
+                    left: `${coordinates.x}px`,
+                    width: '120px',
                 }}
-                className={`absolute bg-primary-500 w-full h-32 hover:cursor-pointer px-2 py-2`}
+                className={`absolute bg-primary-500 w-40 z-20 h-32 hover:cursor-pointer px-2 py-2`}
             >
                 {event.name}
+                {dayjs(newDate).format(simpleDateTimeFormat)}
             </motion.div>
             <AnimatePresence
                 // Disable any initial animations on children that
@@ -115,7 +139,7 @@ const WeekEvent: FC<Props> = ({ columnRef, event }) => {
             >
                 {modalOpen && (
                     <ConfirmClassChangeModal
-                        changeInTimeIncrements={changeInTimeIncrements}
+                        newDate={newDate}
                         updateTime={updateTime}
                         handleClose={() => setModalOpen(false)}
                         event={event}

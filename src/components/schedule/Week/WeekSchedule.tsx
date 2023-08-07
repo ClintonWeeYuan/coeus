@@ -1,8 +1,9 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useRef } from 'react';
 import { PiClockBold } from 'react-icons/pi';
 import dayjs from 'dayjs';
-import WeekColumn from '@/components/schedule/Week/WeekColumn';
 import { IClass } from '@/lib/types';
+import { motion } from 'framer-motion';
+import WeekEvent from '@/components/schedule/Week/WeekEvent';
 
 interface Props {
     currentDate: Date;
@@ -20,66 +21,75 @@ const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
         return res;
     }, [currentDate]);
 
-    const CLASSDATA: IClass[][] = useMemo(() => {
-        const classDataArray = [
-            ...Array.from({ length: 7 }, (): IClass[] => []),
-        ];
-
-        data?.forEach((value) => {
-            const dayInWeek = value.startTime.getDay()
-                ? value.startTime.getDay() - 1
-                : 6;
-            classDataArray[dayInWeek].push(value);
-        });
-
-        return classDataArray;
-    }, [data]);
+    const containerRef = useRef(null);
 
     return (
         <div className="w-full overflow-x-auto overflow-y-hidden">
-            <p>Week Schedule</p>
-
-            <div className="grid grid-cols-[repeat(15,minmax(50px,1fr))]">
-                <div className="col-span-1 border border-gray-300">
-                    <div className="p-2">
-                        <PiClockBold />
-                    </div>
-                    {[...Array.from(Array(12).keys())].map((item) => (
+            <div className="grid grid-cols-15">
+                <div className="flex col-span-1 justify-center items-center h-12">
+                    <PiClockBold />
+                </div>
+                <div className="grid grid-cols-7 col-start-2 col-end-16">
+                    {weekList.map((day) => (
                         <div
-                            key={item}
-                            className="flex justify-end  px-2 py-2 h-32"
+                            key={day}
+                            className="col-span-1 flex justify-center items-center border border-gray-300"
                         >
-                            <p>{item + 8}:00</p>
+                            {day}
                         </div>
                     ))}
                 </div>
-                {weekList.map((day, index) => (
-                    <div
-                        key={day}
-                        className="relative col-span-2 border border-gray-300"
-                    >
-                        <div className="h-12 flex justify-center items-center">
-                            {day}
-                        </div>
-                        {[...Array.from(Array(12).keys())].map(
-                            (item, index) => (
-                                <div key={index}>
-                                    <div
-                                        style={{ height: '64px' }}
-                                        className="border-t border-gray-300"
-                                    ></div>
-                                    <div
-                                        style={{ height: '64px' }}
-                                        className="border-t border-dashed border-gray-300"
-                                    ></div>
-                                </div>
-                            ),
-                        )}
-
-                        <WeekColumn data={CLASSDATA[index]} />
+                <div className="col-span-1">
+                    <div className="flex flex-col">
+                        {[...Array.from(Array(12).keys())].map((item) => (
+                            <div
+                                key={item}
+                                className="flex justify-end h-32 px-2"
+                            >
+                                <p>{item + 8}:00</p>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                </div>
+                <motion.div
+                    className="relative grid grid-cols-7 col-start-2 col-end-16"
+                    ref={containerRef}
+                >
+                    {data?.map((event) => (
+                        <WeekEvent
+                            key={event.id}
+                            event={event}
+                            containerRef={containerRef}
+                        />
+                    ))}
+                    {weekList.map((day) => (
+                        <div
+                            key={day}
+                            className="relative border border-gray-300"
+                        >
+                            {/* Boxes that will contain the schedule events */}
+                            <div ref={containerRef} className="relative">
+                                {[...Array.from(Array(12).keys())].map(
+                                    (item, index) => (
+                                        <div key={index}>
+                                            <div
+                                                style={{ height: '64px' }}
+                                                className="border-t border-gray-300 w-full"
+                                            ></div>
+                                            <div
+                                                style={{ height: '64px' }}
+                                                className="border-t border-dashed border-gray-300 w-full"
+                                            ></div>
+                                        </div>
+                                    ),
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </motion.div>
             </div>
+
+            <div className="flex"></div>
         </div>
     );
 };

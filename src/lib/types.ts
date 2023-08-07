@@ -9,3 +9,8 @@ export interface IClass {
     alert: AlertType;
     link: string;
 }
+
+export interface Coordinates {
+    x: number;
+    y: number;
+}
