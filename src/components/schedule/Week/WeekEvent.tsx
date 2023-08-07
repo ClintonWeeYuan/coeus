@@ -124,7 +124,6 @@ const WeekEvent: FC<Props> = ({ containerRef, event }) => {
                 className={`absolute bg-primary-500 w-40 z-20 h-32 hover:cursor-pointer px-2 py-2`}
             >
                 {event.name}
-                {dayjs(newDate).format(simpleDateTimeFormat)}
             </motion.div>
             <AnimatePresence
                 // Disable any initial animations on children that
