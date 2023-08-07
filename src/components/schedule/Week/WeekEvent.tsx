@@ -4,8 +4,6 @@ import { Coordinates, IClass } from '@/lib/types';
 import ConfirmClassChangeModal from '@/components/schedule/Week/ConfirmClassChangeModal';
 import { trpc } from '@/utils/trpc';
 import { calculateNumberOfIncrements } from '@/utils/weekScheduleDrapAndDrop';
-import dayjs from 'dayjs';
-import { simpleDateTimeFormat } from '@/lib/dateFormats';
 
 interface Props {
     containerRef: MutableRefObject<null>;
