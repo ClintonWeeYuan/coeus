@@ -117,11 +117,14 @@ const WeekEvent: FC<Props> = ({ containerRef, event }) => {
                 style={{
                     top: `${coordinates.y}px`,
                     left: `${coordinates.x}px`,
-                    width: '120px',
+                    width: '110px',
                 }}
-                className={`absolute bg-primary-500 w-40 z-20 h-32 hover:cursor-pointer px-2 py-2`}
+                className={`absolute rounded-xl bg-primary-300 text-secondary-500 w-40 z-20 h-32 hover:cursor-pointer px-2 py-2`}
             >
-                {event.name}
+                <p>{event.name}</p>
+                <p className="text-sm opacity-80">
+                    {event.startTime.getHours()}am
+                </p>
             </motion.div>
             <AnimatePresence
                 // Disable any initial animations on children that
