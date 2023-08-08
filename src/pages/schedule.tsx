@@ -14,7 +14,7 @@ const Schedule: NextPageWithLayout = () => {
     const [currentView, setCurrentView] = useState<string>('day');
     const { user } = useUser();
 
-    const { data } = trpc.class.getClasses.useQuery({
+    const { data, refetch } = trpc.class.getClasses.useQuery({
         date: currentDate,
         owner: user?.id || '',
         type: currentView,
@@ -65,7 +65,11 @@ const Schedule: NextPageWithLayout = () => {
                 {currentView == 'month' ? (
                     <MonthSchedule data={data} currentDate={currentDate} />
                 ) : currentView == 'week' ? (
-                    <WeekSchedule data={data} currentDate={currentDate} />
+                    <WeekSchedule
+                        data={data}
+                        currentDate={currentDate}
+                        refetch={refetch}
+                    />
                 ) : (
                     <DaySchedule />
                 )}

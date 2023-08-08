@@ -2,15 +2,15 @@ import { FC, useMemo, useRef } from 'react';
 import { PiClockBold } from 'react-icons/pi';
 import dayjs from 'dayjs';
 import { IClass } from '@/lib/types';
-import { motion } from 'framer-motion';
 import WeekEvent from '@/components/schedule/Week/WeekEvent';
 
 interface Props {
     currentDate: Date;
     data: IClass[] | undefined;
+    refetch: () => void;
 }
 
-const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
+const WeekSchedule: FC<Props> = ({ currentDate, data, refetch }) => {
     const weekList = useMemo(() => {
         const copyOfDate = new Date(currentDate.getTime());
         const res: string[] = [];
@@ -51,12 +51,13 @@ const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
                         ))}
                     </div>
                 </div>
-                <motion.div
-                    className="relative grid grid-cols-7 col-start-2 col-end-16"
+                <div
+                    className="grid grid-cols-7 relative  col-start-2 col-end-16"
                     ref={containerRef}
                 >
                     {data?.map((event) => (
                         <WeekEvent
+                            refetch={refetch}
                             key={event.id}
                             event={event}
                             containerRef={containerRef}
@@ -68,7 +69,7 @@ const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
                             className="relative border border-gray-300"
                         >
                             {/* Boxes that will contain the schedule events */}
-                            <div ref={containerRef} className="relative">
+                            <div className="">
                                 {[...Array.from(Array(12).keys())].map(
                                     (item, index) => (
                                         <div key={index}>
@@ -86,7 +87,7 @@ const WeekSchedule: FC<Props> = ({ currentDate, data }) => {
                             </div>
                         </div>
                     ))}
-                </motion.div>
+                </div>
             </div>
 
             <div className="flex"></div>

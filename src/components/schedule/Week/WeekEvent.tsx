@@ -8,6 +8,7 @@ import { calculateNumberOfIncrements } from '@/utils/weekScheduleDrapAndDrop';
 interface Props {
     containerRef: MutableRefObject<null>;
     event: IClass;
+    refetch: () => void;
 }
 
 //Height of one block, in pixels
@@ -19,9 +20,8 @@ const blockWidth = 120;
 //Number of minutes in one block
 const blockTime = 30;
 
-const WeekEvent: FC<Props> = ({ containerRef, event }) => {
+const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
     const eventRef = useRef(null);
-
     const [coordinates, setCoordinates] = useState<Coordinates>({
         x: (event.startTime.getDay() ? event.startTime.getDay() - 1 : 6) * 120,
         y:
@@ -45,6 +45,7 @@ const WeekEvent: FC<Props> = ({ containerRef, event }) => {
             newEvent.startTime = newDate;
 
             await mutateAsync(newEvent);
+            refetch();
         } else {
             //Revert back to original position
             const oldCoordinates: Coordinates = {
@@ -111,6 +112,7 @@ const WeekEvent: FC<Props> = ({ containerRef, event }) => {
                     backgroundColor: '#5FAEF1',
                     zIndex: 50,
                     boxShadow: '10px 10px 0 rgba(0, 0, 0, 0.2)',
+                    position: 'absolute',
                 }}
                 dragSnapToOrigin={true}
                 onDragEnd={snapToEventBlock}
