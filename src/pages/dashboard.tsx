@@ -214,7 +214,7 @@ const Dashboard: NextPageWithLayout = () => {
         yAxisWidth: 56,
     };
     return (
-        <main className="px-12 py-6">
+        <main className="px-4 lg:px-12 py-6">
             <Title>Dashboard</Title>
             <Text>
                 Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
@@ -328,7 +328,7 @@ const Dashboard: NextPageWithLayout = () => {
                                             />
                                         </Flex>
                                     </div>
-                                    <div className="flex space-x-2">
+                                    <div className="flex flex-col md:flex-row md:space-x-2 space-y-2 md:space-y-0">
                                         <MultiSelect
                                             className="max-w-full sm:max-w-xs"
                                             onValueChange={setSelectedNames}
