@@ -21,7 +21,7 @@ const WeekSchedule: FC<Props> = ({ currentDate, data, refetch }) => {
         return res;
     }, [currentDate]);
 
-    const containerRef = useRef(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     return (
         <div className="w-full overflow-x-auto overflow-y-hidden">

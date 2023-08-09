@@ -10,7 +10,7 @@ module.exports = {
         extend: {
             gridTemplateColumns: {
                 // Simple 15 column grid
-                15: 'repeat(15, 60px)',
+                15: 'repeat(15, minmax(60px, 1fr))',
             },
             gridColumnStart: {
                 13: '13',

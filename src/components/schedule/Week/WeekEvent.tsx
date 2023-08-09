@@ -1,4 +1,12 @@
-import { FC, MutableRefObject, useRef, useState } from 'react';
+import {
+    FC,
+    MutableRefObject,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import { AnimatePresence, motion, PanInfo } from 'framer-motion';
 import { Coordinates, IClass } from '@/lib/types';
 import ConfirmClassChangeModal from '@/components/schedule/Week/ConfirmClassChangeModal';
@@ -8,7 +16,7 @@ import dayjs from 'dayjs';
 import { simpleDateTimeFormat } from '@/lib/dateFormats';
 
 interface Props {
-    containerRef: MutableRefObject<null>;
+    containerRef: MutableRefObject<HTMLDivElement | null>;
     event: IClass;
     refetch: () => void;
 }
@@ -16,16 +24,32 @@ interface Props {
 //Height of one block, in pixels
 const blockHeight = 64;
 
-//Width of one block, in pixels
-const blockWidth = 120;
-
 //Number of minutes in one block
 const blockTime = 30;
 
 const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
     const eventRef = useRef(null);
+    const [blockWidth, setBlockWidth] = useState(0);
+
+    const onResize = useCallback(() => {
+        if (containerRef.current) {
+            console.log(containerRef.current?.clientWidth);
+            setBlockWidth(containerRef.current.clientWidth / 7);
+        }
+    }, []);
+
+    useEffect(() => {
+        window.addEventListener('resize', onResize);
+        onResize();
+        return () => {
+            window.removeEventListener('resize', onResize);
+        };
+    }, []);
+
     const [coordinates, setCoordinates] = useState<Coordinates>({
-        x: (event.startTime.getDay() ? event.startTime.getDay() - 1 : 6) * 120,
+        x:
+            (event.startTime.getDay() ? event.startTime.getDay() - 1 : 6) *
+            blockWidth,
         y:
             ((event.startTime.getHours() - 8) * 2 +
                 event.startTime.getMinutes() / 30) *
@@ -120,7 +144,7 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
                 style={{
                     top: `${coordinates.y}px`,
                     left: `${coordinates.x}px`,
-                    width: '110px',
+                    width: `${blockWidth - 10}px`,
                 }}
                 className={`absolute rounded-xl bg-primary-300 text-secondary-500 w-40 z-20 h-32 hover:cursor-pointer px-2 py-2`}
             >
