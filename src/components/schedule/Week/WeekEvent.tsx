@@ -1,9 +1,11 @@
-import { FC, MutableRefObject, useEffect, useRef, useState } from 'react';
+import { FC, MutableRefObject, useRef, useState } from 'react';
 import { AnimatePresence, motion, PanInfo } from 'framer-motion';
 import { Coordinates, IClass } from '@/lib/types';
 import ConfirmClassChangeModal from '@/components/schedule/Week/ConfirmClassChangeModal';
 import { trpc } from '@/utils/trpc';
 import { calculateNumberOfIncrements } from '@/utils/weekScheduleDrapAndDrop';
+import dayjs from 'dayjs';
+import { simpleDateTimeFormat } from '@/lib/dateFormats';
 
 interface Props {
     containerRef: MutableRefObject<null>;
@@ -36,12 +38,11 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const { mutateAsync } = trpc.class.editClass.useMutation();
 
-    useEffect(() => {}, [coordinates]);
-
     const updateTime = async (isAccept: boolean) => {
         if (isAccept) {
             //Set event's start time to new date
             const newEvent: IClass = { ...event };
+            console.log(dayjs(newDate).format(simpleDateTimeFormat));
             newEvent.startTime = newDate;
 
             await mutateAsync(newEvent);

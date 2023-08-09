@@ -40,10 +40,12 @@ const classRouter = router({
                 startDate.setDate(1);
                 endDate.setDate(31);
             } else if (type == 'week') {
-                endDate.setDate(startDate.getDate() + 7);
+                endDate.setDate(startDate.getDate() + 6);
+                startDate.setHours(0, 0, 0);
+                endDate.setHours(23, 59, 59);
             } else if (type == 'day') {
                 startDate.setHours(1, 0, 0);
-                endDate.setHours(24, 59, 59);
+                endDate.setHours(23, 59, 59);
             }
 
             const res = await classModel()
@@ -63,7 +65,6 @@ const classRouter = router({
                     ...others,
                 });
             }
-
             return formattedRes;
         }),
 });
