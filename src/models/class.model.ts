@@ -12,6 +12,7 @@ export interface ClassModel {
     type: ClassType;
     name: string;
     startTime: Date;
+    endTime: Date;
     alert: AlertType;
     link: string;
 }
@@ -31,6 +32,10 @@ const classSchema = new Schema<ClassModel>({
         required: true,
     },
     startTime: {
+        type: Date,
+        required: true,
+    },
+    endTime: {
         type: Date,
         required: true,
     },

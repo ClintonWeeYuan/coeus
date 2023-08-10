@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import useUser from '@/components/hooks/useUser';
 import { trpc } from '@/utils/trpc';
@@ -38,6 +38,7 @@ export type FormValues = {
     name: string;
     type: string;
     startTime: Date;
+    endTime: Date;
     alert: string;
     link: string;
 };
@@ -56,8 +57,16 @@ const CreateClassForm: FC = () => {
     const { user } = useUser();
 
     const { mutate } = trpc.class.createClass.useMutation();
+    const [duration, setDuration] = useState(30);
+
     const onSubmit: SubmitHandler<FormValues> = (data) => {
         data.owner = user?.id || '';
+
+        //Set end time from duration
+        const endTime = new Date(data.startTime.getTime());
+        endTime.setMinutes(endTime.getMinutes() + duration);
+        data.endTime = endTime;
+
         // const now = new Date();
         const newClassData: ClassType = {
             ...data,
@@ -97,6 +106,24 @@ const CreateClassForm: FC = () => {
                     <span>Start Time</span>
                 </label>
                 <CustomDatePicker name="startTime" />
+
+                {/* DURATION */}
+                <label className="label pb-0">
+                    <span>End Time</span>
+                </label>
+                <select
+                    onChange={(e) =>
+                        setDuration(parseInt(e.currentTarget.value))
+                    }
+                    className="custom-select"
+                >
+                    <option value={30}>30 minutes</option>
+                    <option value={60}>1 hour</option>
+                    <option value={90}>1 hour 30 minutes</option>
+                    <option value={120}>2 hours</option>
+                    <option value={150}>2 hour 30 minutes</option>
+                    <option value={180}>3 hours</option>
+                </select>
 
                 {/* STUDENT */}
                 {/*<label className="label">*/}

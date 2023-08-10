@@ -28,14 +28,15 @@ const blockTime = 30;
 
 const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
     const eventRef = useRef(null);
-    const [blockWidth, setBlockWidth] = useState(0);
+    const [blockWidth, setBlockWidth] = useState(
+        containerRef.current ? containerRef.current.clientWidth / 7 : 120,
+    );
 
     const onResize = useCallback(() => {
         if (containerRef.current) {
-            console.log(containerRef.current?.clientWidth);
             setBlockWidth(containerRef.current.clientWidth / 7);
         }
-    }, []);
+    }, [containerRef]);
 
     useEffect(() => {
         window.addEventListener('resize', onResize);
@@ -55,18 +56,24 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
             64,
     });
     const [newDate, setNewDate] = useState<Date>(new Date());
+    const [newEndDate, setNewEndDate] = useState<Date>(new Date());
 
     const [changeInTimeIncrementsX, setChangeInTimeIncrementsX] = useState(0);
     const [changeInTimeIncrementsY, setChangeInTimeIncrementsY] = useState(0);
     const [modalOpen, setModalOpen] = useState(false);
     const { mutateAsync } = trpc.class.editClass.useMutation();
 
+    const getDurationInBlocks = (startDate: Date, endDate: Date) => {
+        const duration = endDate.getTime() - startDate.getTime();
+        return duration / 1000 / 60 / 30;
+    };
+
     const updateTime = async (isAccept: boolean) => {
         if (isAccept) {
             //Set event's start time to new date
             const newEvent: IClass = { ...event };
-            console.log(dayjs(newDate).format(simpleDateTimeFormat));
             newEvent.startTime = newDate;
+            newEvent.endTime = newEndDate;
 
             await mutateAsync(newEvent);
             refetch();
@@ -113,8 +120,19 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
             updatedDate.setMinutes(
                 updatedDate.getMinutes() + numberOfIncrementsY * blockTime,
             );
-
             setNewDate(updatedDate);
+
+            //Set new date, which will be used to update mongodb
+            const updatedEndDate: Date = new Date(event.endTime);
+            updatedEndDate.setDate(
+                updatedEndDate.getDate() + numberOfIncrementsX,
+            );
+
+            updatedEndDate.setMinutes(
+                updatedEndDate.getMinutes() + numberOfIncrementsY * blockTime,
+            );
+
+            setNewEndDate(updatedEndDate);
         }
     };
 
@@ -144,8 +162,13 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
                     top: `${coordinates.y}px`,
                     left: `${coordinates.x}px`,
                     width: `${blockWidth - 10}px`,
+                    height: `${
+                        blockHeight *
+                        getDurationInBlocks(event.startTime, event.endTime) *
+                        2
+                    }px`,
                 }}
-                className={`absolute rounded-xl bg-primary-300 text-secondary-500 w-40 z-20 h-32 hover:cursor-pointer px-2 py-2`}
+                className={`absolute rounded-xl bg-primary-300 text-secondary-500 w-40 z-20 hover:cursor-pointer px-2 py-2`}
             >
                 <p>{event.name}</p>
                 <p className="text-sm opacity-80">

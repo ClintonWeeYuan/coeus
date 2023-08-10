@@ -6,6 +6,7 @@ export interface IClass {
     type: ClassType;
     name: string;
     startTime: Date;
+    endTime: Date;
     alert: AlertType;
     link: string;
 }

@@ -38,7 +38,9 @@ const Layout: FC<Props> = ({ children }) => {
                     <Sidebar />
                 </div>
 
-                <div className="py-4 px-4 flex-1 h-screen">{children}</div>
+                <div className="py-4 px-4 flex-1 h-screen overflow-auto">
+                    {children}
+                </div>
             </div>
         </div>
     );
