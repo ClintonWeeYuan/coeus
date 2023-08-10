@@ -30,7 +30,7 @@ const MobileSidebar: FC = () => {
                         animate={{ x: 0 }}
                         exit={{ x: -400 }}
                         transition={{ ease: 'linear' }}
-                        className="top-0 fixed left-0 z-20 h-full bg-secondary-500 w-3/5 md:w-1/3 lg:w-1/5"
+                        className="top-0 absolute left-0 z-50 h-full bg-secondary-500 w-3/5"
                     >
                         <SidebarItems />
                     </motion.aside>
