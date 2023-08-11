@@ -1,4 +1,5 @@
 import { AlertType, ClassType } from '@/models/class.model';
+import { DeltaType } from '@tremor/react';
 
 export interface IClass {
     id: string;
@@ -14,4 +15,13 @@ export interface IClass {
 export interface Coordinates {
     x: number;
     y: number;
+}
+
+export interface Kpi {
+    title: string;
+    metric: string;
+    progress: number;
+    target: string;
+    delta: string;
+    deltaType: DeltaType;
 }

@@ -6,23 +6,30 @@ import {
     ProgressBar,
     Text,
 } from '@tremor/react';
+import { Kpi } from '@/lib/types';
+import { FC } from 'react';
 
+interface Props {
+    item: Kpi;
+}
 // Single KPI card in the demo dashboard with sample inputs
-export default function KpiCard() {
+const KpiCard: FC<Props> = ({ item }) => {
     return (
-        <Card className="max-w-lg mx-auto">
+        <Card key={item.title}>
             <Flex alignItems="start">
-                <div>
-                    <Text>Sales</Text>
-                    <Metric>$ 12,699</Metric>
+                <div className="truncate">
+                    <Text>{item.title}</Text>
+                    <Metric className="truncate">{item.metric}</Metric>
                 </div>
-                <BadgeDelta deltaType="moderateIncrease">13.2%</BadgeDelta>
+                <BadgeDelta deltaType={item.deltaType}>{item.delta}</BadgeDelta>
             </Flex>
-            <Flex className="mt-4">
-                <Text className="truncate">68% ($ 149,940)</Text>
-                <Text>$ 220,500</Text>
+            <Flex className="mt-4 space-x-2">
+                <Text className="truncate">{`${item.progress}% (${item.metric})`}</Text>
+                <Text>{item.target}</Text>
             </Flex>
-            <ProgressBar value={15.9} className="mt-2" />
+            <ProgressBar value={item.progress} className="mt-2" />
         </Card>
     );
-}
+};
+
+export default KpiCard;

@@ -17,7 +17,7 @@ import {
 } from '@tremor/react';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
-export type SalesPerson = {
+export type Student = {
     name: string;
     leads: number;
     sales: string;
@@ -25,9 +25,11 @@ export type SalesPerson = {
     variance: string;
     region: string;
     status: string;
+    level: string;
+    subject: string;
 };
 
-export const salesPeople: SalesPerson[] = [
+export const salesPeople: Student[] = [
     {
         name: 'Peter Doe',
         leads: 45,
@@ -36,6 +38,8 @@ export const salesPeople: SalesPerson[] = [
         variance: 'low',
         region: 'Region A',
         status: 'overperforming',
+        level: 'primary',
+        subject: 'Physics',
     },
     {
         name: 'Lena Whitehouse',
@@ -45,6 +49,8 @@ export const salesPeople: SalesPerson[] = [
         variance: 'low',
         region: 'Region B',
         status: 'average',
+        level: 'primary',
+        subject: 'Physics',
     },
     {
         name: 'Phil Less',
@@ -54,6 +60,8 @@ export const salesPeople: SalesPerson[] = [
         variance: 'medium',
         region: 'Region C',
         status: 'underperforming',
+        level: 'college',
+        subject: 'Biology',
     },
     {
         name: 'John Camper',
@@ -63,6 +71,8 @@ export const salesPeople: SalesPerson[] = [
         variance: 'low',
         region: 'Region A',
         status: 'overperforming',
+        level: 'secondary',
+        subject: 'Chemistry',
     },
     {
         name: 'Max Balmoore',
@@ -72,6 +82,8 @@ export const salesPeople: SalesPerson[] = [
         variance: 'low',
         region: 'Region B',
         status: 'overperforming',
+        level: 'college',
+        subject: 'Physics',
     },
 ];
 
@@ -83,9 +95,11 @@ const deltaTypes: { [key: string]: DeltaType } = {
 
 export default function SalesPeopleTable() {
     const [selectedStatus, setSelectedStatus] = useState('all');
+    const [selectedLevel, setSelectedLevel] = useState('all');
     const [selectedNames, setSelectedNames] = useState<string[]>([]);
 
-    const isSalesPersonSelected = (salesPerson: SalesPerson) =>
+    const isStudentSelected = (salesPerson: Student) =>
+        (salesPerson.level === selectedLevel || selectedLevel === 'all') &&
         (salesPerson.status === selectedStatus || selectedStatus === 'all') &&
         (selectedNames.includes(salesPerson.name) ||
             selectedNames.length === 0);
@@ -98,7 +112,7 @@ export default function SalesPeopleTable() {
                     justifyContent="start"
                     alignItems="center"
                 >
-                    <Title> Performance History </Title>
+                    <Title> Students List </Title>
                     <Icon
                         icon={InformationCircleIcon}
                         variant="simple"
@@ -106,11 +120,11 @@ export default function SalesPeopleTable() {
                     />
                 </Flex>
             </div>
-            <div className="flex space-x-2">
+            <div className="flex flex-col md:flex-row space-y-2 md:space-x-2 md:space-y-0">
                 <MultiSelect
                     className="max-w-full sm:max-w-xs"
                     onValueChange={setSelectedNames}
-                    placeholder="Select Salespeople..."
+                    placeholder="Select Students..."
                 >
                     {salesPeople.map((item) => (
                         <MultiSelectItem key={item.name} value={item.name}>
@@ -132,25 +146,29 @@ export default function SalesPeopleTable() {
                         Underperforming
                     </SelectItem>
                 </Select>
+                <Select
+                    className="max-w-full sm:max-w-xs"
+                    defaultValue="all"
+                    onValueChange={setSelectedLevel}
+                >
+                    <SelectItem value="all">All Levels</SelectItem>
+                    <SelectItem value="primary">Primary</SelectItem>
+                    <SelectItem value="secondary">Secondary</SelectItem>
+                    <SelectItem value="college">College</SelectItem>
+                </Select>
             </div>
             <Table className="mt-6">
                 <TableHead>
                     <TableRow>
                         <TableHeaderCell>Name</TableHeaderCell>
                         <TableHeaderCell className="text-right">
-                            Leads
+                            Subject
                         </TableHeaderCell>
                         <TableHeaderCell className="text-right">
-                            Sales ($)
+                            Revenue ($)
                         </TableHeaderCell>
                         <TableHeaderCell className="text-right">
-                            Quota ($)
-                        </TableHeaderCell>
-                        <TableHeaderCell className="text-right">
-                            Variance
-                        </TableHeaderCell>
-                        <TableHeaderCell className="text-right">
-                            Region
+                            Level
                         </TableHeaderCell>
                         <TableHeaderCell className="text-right">
                             Status
@@ -160,7 +178,7 @@ export default function SalesPeopleTable() {
 
                 <TableBody>
                     {salesPeople
-                        .filter((item) => isSalesPersonSelected(item))
+                        .filter((item) => isStudentSelected(item))
                         .map((item) => (
                             <TableRow key={item.name}>
                                 <TableCell>{item.name}</TableCell>
@@ -171,13 +189,7 @@ export default function SalesPeopleTable() {
                                     {item.sales}
                                 </TableCell>
                                 <TableCell className="text-right">
-                                    {item.quota}
-                                </TableCell>
-                                <TableCell className="text-right">
-                                    {item.variance}
-                                </TableCell>
-                                <TableCell className="text-right">
-                                    {item.region}
+                                    {item.level}
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <BadgeDelta

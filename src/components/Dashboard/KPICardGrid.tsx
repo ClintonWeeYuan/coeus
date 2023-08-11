@@ -2,21 +2,12 @@ import {
     BadgeDelta,
     Card,
     Grid,
-    DeltaType,
     Flex,
     Metric,
     ProgressBar,
     Text,
 } from '@tremor/react';
-
-type Kpi = {
-    title: string;
-    metric: string;
-    progress: number;
-    target: string;
-    delta: string;
-    deltaType: DeltaType;
-};
+import { Kpi } from '@/lib/types';
 
 const kpiData: Kpi[] = [
     {
@@ -36,7 +27,7 @@ const kpiData: Kpi[] = [
         deltaType: 'increase',
     },
     {
-        title: 'Customers',
+        title: 'Students',
         metric: '1,072',
         progress: 53.6,
         target: '2,000',
