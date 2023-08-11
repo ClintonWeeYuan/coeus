@@ -3,6 +3,8 @@ import { procedure, router } from '@/server/trpc';
 import { editClassSchema, newClassSchema } from '@/lib/validationSchema';
 import { z } from 'zod';
 import { IClass } from '@/lib/types';
+import dayjs from 'dayjs';
+import { simpleDateTimeFormat } from '@/lib/dateFormats';
 
 const classRouter = router({
     createClass: procedure.input(newClassSchema).mutation(async ({ input }) => {
@@ -66,6 +68,13 @@ const classRouter = router({
                     ...others,
                 });
             }
+
+            console.log(
+                `Classes from ${dayjs(startDate).format(
+                    simpleDateTimeFormat,
+                )} to ${dayjs(endDate).format(simpleDateTimeFormat)}`,
+            );
+            console.log(formattedRes);
             return formattedRes;
         }),
 });

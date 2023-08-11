@@ -162,8 +162,7 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
                     width: `${blockWidth - 10}px`,
                     height: `${
                         blockHeight *
-                        getDurationInBlocks(event.startTime, event.endTime) *
-                        2
+                        getDurationInBlocks(event.startTime, event.endTime)
                     }px`,
                 }}
                 className={`absolute rounded-xl bg-primary-300 text-secondary-500 w-40 z-20 hover:cursor-pointer px-2 py-2`}
