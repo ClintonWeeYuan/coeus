@@ -116,7 +116,7 @@ export default function SalesPeopleTable() {
                     <Icon
                         icon={InformationCircleIcon}
                         variant="simple"
-                        tooltip="Shows sales performance per employee"
+                        tooltip="Shows list of students"
                     />
                 </Flex>
             </div>

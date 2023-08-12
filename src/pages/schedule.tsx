@@ -5,7 +5,7 @@ import Header from '@/components/schedule/Header';
 import ViewOptions from '@/components/schedule/ViewOptions';
 import MonthSchedule from '@/components/schedule/MonthSchedule';
 import WeekSchedule from '@/components/schedule/Week/WeekSchedule';
-import DaySchedule from '@/components/schedule/DaySchedule';
+import DaySchedule from '@/components/schedule/Day/DaySchedule';
 import { trpc } from '@/utils/trpc';
 import useUser from '@/components/hooks/useUser';
 
@@ -71,7 +71,7 @@ const Schedule: NextPageWithLayout = () => {
                         refetch={refetch}
                     />
                 ) : (
-                    <DaySchedule />
+                    <DaySchedule data={data} />
                 )}
             </div>
         </>

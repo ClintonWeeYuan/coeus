@@ -27,7 +27,7 @@ const Layout: FC<Props> = ({ children }) => {
                 <link rel="icon" href="/favicon.ico" sizes="any" />
                 <title>Coeus</title>
             </Head>
-            <div className="flex overflow-auto">
+            <div className="flex">
                 <div className="hidden md:block md:w-1/4 h-screen"></div>
 
                 <div className="block md:hidden">
@@ -38,9 +38,7 @@ const Layout: FC<Props> = ({ children }) => {
                     <Sidebar />
                 </div>
 
-                <div className="py-4 px-4 flex-1 h-screen overflow-auto">
-                    {children}
-                </div>
+                <div className="py-4 px-4 flex-1 h-screen">{children}</div>
             </div>
         </div>
     );
