@@ -12,6 +12,7 @@ import { Markdown } from 'tiptap-markdown';
 import Highlight from '@tiptap/extension-highlight';
 // import SlashCommand from './slash-command';
 import { InputRule } from '@tiptap/core';
+import Heading from '@tiptap/extension-heading';
 // import UploadImagesPlugin from '@/ui/editor/plugins/upload-images';
 // import UpdatedImage from './updated-image';
 
@@ -133,5 +134,8 @@ export const TiptapExtensions = [
     Markdown.configure({
         html: false,
         transformCopiedText: true,
+    }),
+    Heading.configure({
+        levels: [1, 2, 3],
     }),
 ];

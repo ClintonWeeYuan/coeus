@@ -149,7 +149,7 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
                 }}
                 whileDrag={{
                     scale: 0.95,
-                    backgroundColor: '#5FAEF1',
+                    opacity: 0.7,
                     zIndex: 50,
                     boxShadow: '10px 10px 0 rgba(0, 0, 0, 0.2)',
                     position: 'absolute',
@@ -165,7 +165,7 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
                         getDurationInBlocks(event.startTime, event.endTime)
                     }px`,
                 }}
-                className={`absolute rounded-xl bg-primary-300 text-secondary-500 w-40 z-20 hover:cursor-pointer px-2 py-2`}
+                className={`absolute rounded-lg px-4 py-2 bg-primary-100 border-l-8 border-l-primary-700 absolute text-primary-700 z-20 hover:cursor-pointer px-2 py-2`}
             >
                 <p>{event.name}</p>
                 <p className="text-sm opacity-80">

@@ -19,10 +19,10 @@ const DayEvent: FC<Props> = ({ event }) => {
     return (
         <div
             style={{ top: `${top}px`, height: `${height}px` }}
-            className="rounded-lg px-4 py-2 bg-primary-500 absolute w-full"
+            className="rounded-lg px-4 py-2 bg-primary-100 border-l-8 border-l-primary-700 absolute text-primary-700 w-full"
         >
             <p>{event.name}</p>
-            <p className="text-sm opacity-80">
+            <p className="text-sm">
                 {event.startTime.getHours()}:00
             </p>
         </div>

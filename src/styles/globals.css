@@ -52,7 +52,11 @@
     --novel-highlight-gray: #3a3a3a;
 }
 
-/* Default Font */
+/* Headings */
+h1, h2, h3 {
+    font-weight: 700
+}
+/* Custom components */
 
 @layer components {
     .custom-select {

@@ -15,7 +15,7 @@ const KnowledgeBase: NextPageWithLayout = () => {
         {
           data?.map((page) => (
             <Link  key={page._id.toString()} href={`/knowledgebase/${page._id.toString()}`}>
-            <div  className="shadow-lg rounded-lg px-4 py-2 hover:cursor-pointer w-full">
+            <div  className="px-4 py-2 border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-4">
               {page.title}
             </div>
             </Link>
