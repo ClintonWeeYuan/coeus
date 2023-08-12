@@ -22,4 +22,9 @@ export const editClassSchema = z.object({
     link: z.string(),
 });
 
+export const pageSchema = z.object({
+    owner: z.string(),
+    title: z.string().nonempty(defaultRequireMessage),
+})
+
 export type ClassType = z.infer<typeof newClassSchema>;
