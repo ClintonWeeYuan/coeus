@@ -30,12 +30,8 @@ const EditorComponent: FC<Props> = ({savedContent, title, pageId}) => {
   const { user } = useUser();
 
   const publishPage = () => {
-    console.log(jsonContent);
     mutate({ owner: user?.id || "", pageId: pageId, content: jsonContent, title: currentTitle });
   }
-  console.log("SAVED CONTENT")
-  console.log(savedContent);
-
 
   const editor = useEditor({
     extensions: TiptapExtensions,

@@ -5,22 +5,24 @@ import EditorComponent from "@/components/KnowledgeBase/EditorComponent";
 import { ReactElement } from "react";
 import Layout from "@/components/Layout/Layout";
 import { useRouter } from "next/router";
+import LoadingScreen from "@/components/common/LoadingScreen";
 
 const KnowledgePage: NextPageWithLayout = () => {
   const { user } = useUser()
   const router = useRouter()
   console.log(router.query.pageId)
   const pageId = Array.isArray(router.query.pageId) ? "" : router.query.pageId || ""
-  const { data } = trpc.page.getPage.useQuery({
+  const { data, isLoading } = trpc.page.getPage.useQuery({
     owner: user?.id || "",
     pageId: pageId,
   }, {staleTime: 10});
   console.log(data)
   return (
     <>
-      <div className="relative">
+      <div className="relative h-full">
+
         {
-          data && <EditorComponent pageId={pageId} title={data[0].title} savedContent={data[0].content}/>
+          data && !isLoading ? <EditorComponent pageId={pageId} title={data[0].title} savedContent={data[0].content}/> : <LoadingScreen/>
         }
       </div>
     </>
