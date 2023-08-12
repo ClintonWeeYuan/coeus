@@ -22,7 +22,7 @@ const KnowledgePage: NextPageWithLayout = () => {
       <div className="relative h-full">
 
         {
-          data && !isLoading ? <EditorComponent pageId={pageId} title={data[0].title} savedContent={data[0].content}/> : <LoadingScreen/>
+          isLoading ? <LoadingScreen/> : data && !isLoading ? <EditorComponent pageId={pageId} title={data[0].title} savedContent={data[0].content}/> : <></>
         }
       </div>
     </>
