@@ -257,7 +257,7 @@ const CommandList = ({
                        range,
                      }: {
   items: CommandItemProps[];
-  command: (props : CommandProps) => void;
+  command: (props : CommandItemProps) => void;
   editor: Editor;
   range: Range;
 }) => {
