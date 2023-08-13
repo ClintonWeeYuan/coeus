@@ -4,6 +4,7 @@ import { NextPage } from 'next';
 import { ReactElement, ReactNode } from 'react';
 import { trpc } from '@/utils/trpc';
 import PrivateRoute from '@/components/PrivateRoute';
+import { Toaster } from "sonner";
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode;
@@ -20,6 +21,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
 
     return getLayout(
         <PrivateRoute privateRoutes={privateRoutes}>
+            <Toaster richColors />
             <Component {...pageProps} />
         </PrivateRoute>,
     );

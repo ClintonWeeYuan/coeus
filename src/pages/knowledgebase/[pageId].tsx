@@ -20,9 +20,8 @@ const KnowledgePage: NextPageWithLayout = () => {
   return (
     <>
       <div className="relative h-full">
-
         {
-          isLoading ? <LoadingScreen/> : data && !isLoading ? <EditorComponent pageId={pageId} title={data[0].title} savedContent={data[0].content}/> : <></>
+          isLoading ? <LoadingScreen/>  : (data && !isLoading) ? <EditorComponent pageId={pageId} title={data[0].title} savedContent={data[0].content}/> : <></>
         }
       </div>
     </>
