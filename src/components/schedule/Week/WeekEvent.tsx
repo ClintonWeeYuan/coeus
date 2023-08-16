@@ -165,7 +165,7 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
                         getDurationInBlocks(event.startTime, event.endTime)
                     }px`,
                 }}
-                className={`absolute rounded-lg px-4 py-2 bg-primary-100 border-l-8 border-l-primary-700 absolute text-primary-700 z-20 hover:cursor-pointer px-2 py-2`}
+                className={`absolute overflow-hidden rounded-lg px-4 py-2 bg-primary-100 border-l-8 border-l-primary-700 absolute text-primary-700 z-20 hover:cursor-pointer px-2 py-2`}
             >
                 <p>{event.name}</p>
                 <p className="text-sm opacity-80">

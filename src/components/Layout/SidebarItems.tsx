@@ -98,12 +98,13 @@ const SidebarItems: FC = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          <button
+          <Link href="/settings">
+          <div
             className="btn btn-ghost bg-gray-500 hover:text-neutral-light mr-2"
-            type="button"
           >
             <IoSettingsSharp/>
-          </button>
+          </div>
+          </Link>
 
           <button
             className="btn btn-error hover:text-neutral-light"

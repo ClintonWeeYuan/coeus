@@ -11,15 +11,15 @@ const DayEvent: FC<Props> = ({ event }) => {
     }, [event]);
 
     const height = useMemo(() => {
-        const startHour = event.startTime.getHours();
-        const endHour = event.endTime.getHours();
-
-        return (endHour - startHour) * 32;
+        console.log(event.startTime);
+        console.log(event.endTime)
+        const duration = event.endTime.getTime() - event.startTime.getTime();
+        return duration / 1000 /60 / 30 * 32;
     }, [event]);
     return (
         <div
             style={{ top: `${top}px`, height: `${height}px` }}
-            className="rounded-lg px-4 py-2 bg-primary-100 border-l-8 border-l-primary-700 absolute text-primary-700 w-full"
+            className="rounded-lg px-4 py-2 bg-primary-100 border-l-8 border-l-primary-700 absolute text-primary-700 w-full overflow-hidden"
         >
             <p>{event.name}</p>
             <p className="text-sm">

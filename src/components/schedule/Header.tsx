@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import CreateClassModal from '@/components/schedule/CreateClassModal';
 import dayjs from 'dayjs';
+import { GrAdd } from 'react-icons/gr';
 
 interface Props {
     currentDate: Date;
@@ -18,6 +19,8 @@ const Header: FC<Props> = ({ currentDate, currentView, classCount }) => {
     const [display, setDisplay] = useState(
         dayjs(currentDate).format('MMMM YYYY'),
     );
+    const [openModal, setOpenModal] = useState(false);
+
 
     useEffect(() => {
         setDisplay(dayjs(currentDate).format(dateFormats[currentView]));
@@ -32,7 +35,10 @@ const Header: FC<Props> = ({ currentDate, currentView, classCount }) => {
                     {classCount} classes
                 </p>
             </div>
-            <CreateClassModal />
+
+            <button className="btn btn-accent btn-circle" onClick={() => setOpenModal(true)}><GrAdd/></button>
+            {openModal && <CreateClassModal handleClose={() => setOpenModal(false)} />}
+
         </div>
     );
 };

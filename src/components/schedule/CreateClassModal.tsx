@@ -4,32 +4,51 @@ import useUser from '@/components/hooks/useUser';
 import { trpc } from '@/utils/trpc';
 import { ClassType, newClassSchema } from '@/lib/validationSchema';
 import CustomDatePicker from '@/components/common/DatePicker';
-import { GrAdd } from 'react-icons/gr';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { classDefaultValues } from '@/lib/defaultValues';
+import Backdrop from "@/components/common/Backdrop";
+import { motion } from "framer-motion";
+import { toast } from "sonner";
+import LoadingButton from "@/components/common/LoadingButton";
 
-const CreateClassModal: FC = () => {
+const dropIn = {
+    hidden: {
+        y: '-100vh',
+        opacity: 0,
+    },
+    visible: {
+        y: '0',
+        opacity: 1,
+        transition: {
+            duration: 0.1,
+            type: 'spring',
+            damping: 25,
+            stiffness: 500,
+        },
+    },
+    exit: {
+        y: '100vh',
+        opacity: 0,
+    },
+};
+
+interface Props {
+    handleClose : () => void
+}
+const CreateClassModal: FC<Props> = ({handleClose}) => {
     return (
-        <div className="flex justify-end">
-            {/* The button to open modal */}
-            <label htmlFor="my_modal_6" className="btn btn-circle btn-accent">
-                <GrAdd />
-            </label>
-
-            {/* Put this part before </body> tag */}
-            <input type="checkbox" id="my_modal_6" className="modal-toggle" />
-            <div className="modal">
-                <div className="modal-box overflow-visible">
-                    <label
-                        htmlFor="my_modal_6"
-                        className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                    >
-                        ✕
-                    </label>
-                    <CreateClassForm />
-                </div>
-            </div>
-        </div>
+      <Backdrop onClick={handleClose}>
+          <motion.div
+            onClick={(e) => e.stopPropagation()}
+            className="relative bg-white rounded-lg px-10 py-6 w-full md:w-2/5"
+            variants={dropIn}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+              <CreateClassForm />
+          </motion.div>
+      </Backdrop>
     );
 };
 
@@ -56,10 +75,24 @@ const CreateClassForm: FC = () => {
 
     const { user } = useUser();
 
-    const { mutate } = trpc.class.createClass.useMutation();
+    const { mutateAsync } = trpc.class.createClass.useMutation({
+        onSuccess: () => {
+            toast.success("Class created!")
+        },
+        onError: () => {
+            toast.error("Something went wrong...")
+        },
+        onSettled: () => {
+            setIsLoading(false);
+        }
+    });
     const [duration, setDuration] = useState(30);
 
-    const onSubmit: SubmitHandler<FormValues> = (data) => {
+    const [isLoading, setIsLoading] = useState(false)
+
+    const onSubmit: SubmitHandler<FormValues> = async (data) => {
+        setIsLoading(true);
+
         data.owner = user?.id || '';
 
         //Set end time from duration
@@ -67,11 +100,10 @@ const CreateClassForm: FC = () => {
         endTime.setMinutes(endTime.getMinutes() + duration);
         data.endTime = endTime;
 
-        // const now = new Date();
         const newClassData: ClassType = {
             ...data,
         };
-        mutate(newClassData);
+        await mutateAsync(newClassData);
     };
 
     return (
@@ -154,9 +186,10 @@ const CreateClassForm: FC = () => {
                     {...register('link', { required: true })}
                 />
                 <div className="modal-action py-4">
-                    <button type="submit" className="btn btn-primary">
-                        Schedule Class
-                    </button>
+                    <LoadingButton
+                      isLoading={isLoading}
+                      text="Schedule Class"
+                    />
                 </div>
             </form>
         </FormProvider>

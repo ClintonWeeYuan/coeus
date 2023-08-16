@@ -9,9 +9,7 @@ import { simpleDateTimeFormat } from '@/lib/dateFormats';
 const classRouter = router({
     createClass: procedure.input(newClassSchema).mutation(async ({ input }) => {
         try {
-            console.log(input);
-            const newClass = await classModel().create(input);
-            console.log(newClass);
+            await classModel().create(input);
         } catch (e) {
             console.log(e);
         }
