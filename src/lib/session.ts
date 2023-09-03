@@ -1,7 +1,7 @@
 import type { IronSessionOptions } from 'iron-session';
 
 export interface UserSession {
-    id: string | null;
+    id: number | null;
     firstName: string;
     lastName: string;
     email: string;

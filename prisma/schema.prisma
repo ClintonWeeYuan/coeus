@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  firstName   String
+  lastName    String
+  password    String
+  classEvents ClassEvent[]
+  Page        Page[]
+}
+
+enum ClassType {
+  PRIVATE
+  GROUP
+}
+
+model ClassEvent {
+  id          Int       @id @default(autoincrement())
+  owner       User      @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+  title       String
+  classType   ClassType @default(PRIVATE)
+  studentName String
+  startDate   DateTime
+  endDate     DateTime
+  alert       String
+  link        String
+}
+
+model Page {
+  id        Int      @id @default(autoincrement())
+  owner     User     @relation(fields: [ownerId], references: [id])
+  ownerId   Int
+  title     String
+  content   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

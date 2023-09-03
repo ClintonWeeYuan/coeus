@@ -1,13 +1,13 @@
 import { FC } from 'react';
-import { IClass } from '@/lib/types';
+import { ClassEvent } from "@prisma/client";
 
 interface Props {
-    currentClass: IClass;
+    currentClass: ClassEvent;
 }
 const MonthEventBlock: FC<Props> = ({ currentClass }) => {
     return (
         <p className="w-full bg-primary-500 text-xs mb-1">
-            {currentClass.name}
+            {currentClass.title}
         </p>
     );
 };

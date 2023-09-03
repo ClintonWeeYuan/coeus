@@ -1,12 +1,12 @@
 import { FC, useMemo, useRef } from 'react';
 import { PiClockBold } from 'react-icons/pi';
 import dayjs from 'dayjs';
-import { IClass } from '@/lib/types';
 import WeekEvent from '@/components/schedule/Week/WeekEvent';
+import { ClassEvent } from "@prisma/client";
 
 interface Props {
     currentDate: Date;
-    data: IClass[] | undefined;
+    data: ClassEvent[] | undefined;
     refetch: () => void;
 }
 

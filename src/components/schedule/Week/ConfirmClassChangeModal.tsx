@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import { IClass } from '@/lib/types';
 import Backdrop from '@/components/common/Backdrop';
 import { motion } from 'framer-motion';
 import dayjs from 'dayjs';
 import { simpleDateTimeFormat } from '@/lib/dateFormats';
+import { ClassEvent } from "@prisma/client";
 
 interface Props {
-    event: IClass;
+    event: ClassEvent;
     handleClose: () => void;
     updateTime: (isAccept: boolean) => void;
     newDate: Date;
@@ -55,10 +55,10 @@ const ConfirmClassChangeModal: FC<Props> = ({
             >
                 <p className="text-3xl mb-4">Change of Class Time</p>
                 <p className="py-4 mb-2 md:mb-8">
-                    Are you sure you want to change the time for {event.name},
+                    Are you sure you want to change the time for {event.title},
                     from{' '}
                     <span className="font-bold">
-                        {dayjs(event.startTime).format(simpleDateTimeFormat)}
+                        {dayjs(event.startDate).format(simpleDateTimeFormat)}
                     </span>{' '}
                     to{' '}
                     <span className="font-bold">

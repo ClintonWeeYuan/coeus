@@ -1,41 +1,36 @@
 import { procedure, router } from '@/server/trpc';
 import { z } from 'zod';
-import pageModel from "@/models/page.model";
+import { prisma } from "@/db";
 
 const pageRouter = router({
   createPage: procedure.input(z.object({
     title: z.string(),
-    owner: z.string(),
-    content: z.any()
+    ownerId: z.number(),
+    content: z.string()
   })).mutation(async ({ input }) => {
     try {
-      console.log(input);
-      const newPage = await pageModel().create(input);
-      console.log(newPage);
+      return await prisma.page.create({ data: input });
     } catch (e) {
       console.log(e);
     }
   }),
-  getAllPages: procedure.input(z.object({ owner: z.string() })).query(async ({ input }) => {
-    const { owner } = input;
-    console.log(owner)
-
+  getAllPages: procedure.input(z.number()).query(async ({ input }) => {
     try {
-      const res = await pageModel()
-        .find({
-          owner: owner,
-        }, { title: 1 })
-        .lean();
+      const res = await prisma.page.findMany({
+        where: {
+          ownerId: input
+        }
+      });
       console.log(res)
       return res;
     } catch (e) {
       console.log(e)
     }
   }),
-  getPage: procedure.input(z.object({ owner: z.string(), pageId: z.string() })).query(async ({ input }) => {
-    const { owner, pageId } = input;
+  getPage: procedure.input(z.number()).query(async ({ input }) => {
+
     try {
-      const res = await pageModel().find({ owner: owner, _id: pageId }).lean();
+      const res = await prisma.page.findUnique({ where: { id: input } })
       console.log(res)
       return res;
     } catch (e) {
@@ -43,14 +38,18 @@ const pageRouter = router({
     }
   }),
   updatePage: procedure.input(z.object({
-    owner: z.string(),
-    pageId: z.string(),
+    ownerId: z.number(),
+    pageId: z.number(),
     content: z.any(),
     title: z.string()
   })).mutation(async ({ input }) => {
-    const { owner, pageId, content, title } = input;
+    const { pageId, ...newData } = input;
     try {
-      const res = await pageModel().updateOne({ owner: owner, _id: pageId }, {content: content, title: title});
+      console.log(newData)
+      const res = await prisma.page.update({
+        where: { id: pageId },
+        data: newData
+      });
       console.log(res)
       return res;
     } catch (e) {

@@ -1,9 +1,9 @@
 import { procedure, router } from '@/server/trpc';
 import { z } from 'zod';
-import userModel from '@/models/user.model';
 import bcrypt from 'bcrypt';
 import { TRPCError } from '@trpc/server';
 import { UserSession } from '@/lib/session';
+import { prisma } from "@/db";
 
 const sessionRouter = router({
     login: procedure
@@ -11,8 +11,8 @@ const sessionRouter = router({
         .mutation(async ({ ctx, input }) => {
             const { email, password } = input;
             try {
-                const user = await userModel().findOne({ email });
-                console.log(user);
+                // const user = await userModel().findOne({ email });
+                const user = await prisma.user.findUnique({where: {email}})
 
                 if (!user || !(await bcrypt.compare(password, user.password))) {
                     throw new TRPCError({
@@ -22,7 +22,7 @@ const sessionRouter = router({
                 }
                 const res = {
                     isLoggedIn: true,
-                    id: user._id.toString(),
+                    id: user.id,
                     email: user.email,
                     firstName: user.firstName,
                     lastName: user.lastName,

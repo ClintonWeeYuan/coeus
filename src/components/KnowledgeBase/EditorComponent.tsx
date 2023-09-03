@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useEditor, EditorContent, JSONContent } from '@tiptap/react';
 import { TiptapExtensions } from '@/components/KnowledgeBase/extensions';
 import { TiptapEditorProps } from '@/components/KnowledgeBase/props';
@@ -14,7 +14,7 @@ import { toast } from "sonner";
 interface Props {
   savedContent: JSONContent,
   title: string,
-  pageId: string,
+  pageId: number,
 }
 
 const EditorComponent: FC<Props> = ({ savedContent, title, pageId }) => {
@@ -28,11 +28,15 @@ const EditorComponent: FC<Props> = ({ savedContent, title, pageId }) => {
   // const [hydrated, setHydrated] = useState(false);
   const [jsonContent, setJSONContent] = useState<JSONContent>();
 
+  useEffect(() => {
+    setCurrentTitle(title)
+  }, [title])
+
   const { mutate } = trpc.page.updatePage.useMutation();
   const { user } = useUser();
 
   const publishPage = () => {
-    mutate({ owner: user?.id || "", pageId: pageId, content: jsonContent, title: currentTitle });
+    mutate({ ownerId: user?.id || 0, pageId: pageId, content: jsonContent, title: currentTitle });
     toast.success("Successfully published!")
   }
 

@@ -1,16 +1,6 @@
-import { AlertType, ClassType } from '@/models/class.model';
 import { DeltaType } from '@tremor/react';
 
-export interface IClass {
-    id: string;
-    owner: string;
-    type: ClassType;
-    name: string;
-    startTime: Date;
-    endTime: Date;
-    alert: AlertType;
-    link: string;
-}
+export type ClassType = "GROUP" | "PRIVATE"
 
 export interface Coordinates {
     x: number;
@@ -24,4 +14,11 @@ export interface Kpi {
     target: string;
     delta: string;
     deltaType: DeltaType;
+}
+
+export interface IUser {
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
 }

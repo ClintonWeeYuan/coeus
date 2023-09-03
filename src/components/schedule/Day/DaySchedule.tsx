@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { IClass } from '@/lib/types';
 import { Card } from '@tremor/react';
 import DayEvent from '@/components/schedule/Day/DayEvent';
+import { ClassEvent } from "@prisma/client";
 
 interface Props {
-    data: IClass[] | undefined;
+    data: ClassEvent[] | undefined;
 }
 const DaySchedule: FC<Props> = ({ data }) => {
     return (

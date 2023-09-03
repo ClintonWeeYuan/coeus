@@ -7,14 +7,15 @@ import {
     useState,
 } from 'react';
 import { AnimatePresence, motion, PanInfo } from 'framer-motion';
-import { Coordinates, IClass } from '@/lib/types';
+import { Coordinates } from '@/lib/types';
 import ConfirmClassChangeModal from '@/components/schedule/Week/ConfirmClassChangeModal';
 import { trpc } from '@/utils/trpc';
 import { calculateNumberOfIncrements } from '@/utils/weekScheduleDrapAndDrop';
+import { ClassEvent } from "@prisma/client";
 
 interface Props {
     containerRef: MutableRefObject<HTMLDivElement | null>;
-    event: IClass;
+    event: ClassEvent;
     refetch: () => void;
 }
 
@@ -46,11 +47,11 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
 
     const [coordinates, setCoordinates] = useState<Coordinates>({
         x:
-            (event.startTime.getDay() ? event.startTime.getDay() - 1 : 6) *
+            (event.startDate.getDay() ? event.startDate.getDay() - 1 : 6) *
             blockWidth,
         y:
-            ((event.startTime.getHours() - 8) * 2 +
-                event.startTime.getMinutes() / 30) *
+            ((event.startDate.getHours() - 8) * 2 +
+                event.startDate.getMinutes() / 30) *
             64,
     });
     const [newDate, setNewDate] = useState<Date>(new Date());
@@ -69,9 +70,9 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
     const updateTime = async (isAccept: boolean) => {
         if (isAccept) {
             //Set event's start time to new date
-            const newEvent: IClass = { ...event };
-            newEvent.startTime = newDate;
-            newEvent.endTime = newEndDate;
+            const newEvent: ClassEvent = { ...event };
+            newEvent.startDate = newDate;
+            newEvent.endDate = newEndDate;
 
             await mutateAsync(newEvent);
             refetch();
@@ -112,7 +113,7 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
             setCoordinates(newCoordinates);
 
             //Set new date, which will be used to update mongodb
-            const updatedDate: Date = new Date(event.startTime);
+            const updatedDate: Date = new Date(event.startDate);
             updatedDate.setDate(updatedDate.getDate() + numberOfIncrementsX);
 
             updatedDate.setMinutes(
@@ -121,7 +122,7 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
             setNewDate(updatedDate);
 
             //Set new date, which will be used to update mongodb
-            const updatedEndDate: Date = new Date(event.endTime);
+            const updatedEndDate: Date = new Date(event.endDate);
             updatedEndDate.setDate(
                 updatedEndDate.getDate() + numberOfIncrementsX,
             );
@@ -162,14 +163,14 @@ const WeekEvent: FC<Props> = ({ containerRef, event, refetch }) => {
                     width: `${blockWidth - 10}px`,
                     height: `${
                         blockHeight *
-                        getDurationInBlocks(event.startTime, event.endTime)
+                        getDurationInBlocks(event.startDate, event.endDate)
                     }px`,
                 }}
                 className={`absolute overflow-hidden rounded-lg px-4 py-2 bg-primary-100 border-l-8 border-l-primary-700 absolute text-primary-700 z-20 hover:cursor-pointer px-2 py-2`}
             >
-                <p>{event.name}</p>
+                <p>{event.title}</p>
                 <p className="text-sm opacity-80">
-                    {event.startTime.getHours()}am
+                    {event.startDate.getHours()}am
                 </p>
             </motion.div>
             <AnimatePresence

@@ -16,7 +16,7 @@ const Schedule: NextPageWithLayout = () => {
 
     const { data, refetch } = trpc.class.getClasses.useQuery({
         date: currentDate,
-        owner: user?.id || '',
+        ownerId: user?.id || -1,
         type: currentView,
     });
 

@@ -1,30 +1,38 @@
 import { z } from 'zod';
 
 const defaultRequireMessage = 'This field is required';
-export const newClassSchema = z.object({
-    owner: z.string(),
-    name: z.string().nonempty(defaultRequireMessage),
-    type: z.string().nonempty(defaultRequireMessage),
-    startTime: z.date(),
-    endTime: z.date(),
-    alert: z.string(),
-    link: z.string(),
-});
 
-export const editClassSchema = z.object({
-    owner: z.string(),
-    id: z.string(),
-    name: z.string().nonempty(defaultRequireMessage),
-    type: z.string().nonempty(defaultRequireMessage),
-    startTime: z.date(),
-    endTime: z.date(),
-    alert: z.string(),
-    link: z.string(),
-});
-
-export const pageSchema = z.object({
-    owner: z.string(),
-    title: z.string().nonempty(defaultRequireMessage),
+const baseClassSchema = z.object({
+  title: z.string().nonempty(defaultRequireMessage),
+  studentName: z.string().nonempty(defaultRequireMessage),
+  classType: z.enum(["PRIVATE", "GROUP"]),
+  startDate: z.date(),
+  endDate: z.date(),
+  alert: z.string(),
+  link: z.string(),
 })
 
-export type ClassType = z.infer<typeof newClassSchema>;
+type baseClassType = z.infer<typeof baseClassSchema>
+
+export const newClassSchema = baseClassSchema.extend({
+  ownerId: z.number()
+})
+
+export interface newClassType extends baseClassType {
+  ownerId: number;
+}
+
+export const editClassSchema = baseClassSchema.extend({
+  id: z.number(),
+  ownerId: z.number(),
+})
+
+export interface editClassType extends baseClassType {
+  id: number;
+  ownerId: number;
+}
+
+export const pageSchema = z.object({
+  owner: z.string(),
+  title: z.string().nonempty(defaultRequireMessage),
+})

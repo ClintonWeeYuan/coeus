@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import useUser from '@/components/hooks/useUser';
 import { trpc } from '@/utils/trpc';
-import { ClassType, newClassSchema } from '@/lib/validationSchema';
+import { newClassType, newClassSchema } from '@/lib/validationSchema';
 import CustomDatePicker from '@/components/common/DatePicker';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { classDefaultValues } from '@/lib/defaultValues';
@@ -10,6 +10,7 @@ import Backdrop from "@/components/common/Backdrop";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import LoadingButton from "@/components/common/LoadingButton";
+import { ClassType } from "@prisma/client";
 
 const dropIn = {
     hidden: {
@@ -53,17 +54,18 @@ const CreateClassModal: FC<Props> = ({handleClose}) => {
 };
 
 export type FormValues = {
-    owner: string;
-    name: string;
-    type: string;
-    startTime: Date;
-    endTime: Date;
+    ownerId: number;
+    title: string;
+    studentName: string;
+    classType: ClassType;
+    startDate: Date;
+    endDate: Date;
     alert: string;
     link: string;
 };
 
 const CreateClassForm: FC = () => {
-    const methods = useForm<ClassType>({
+    const methods = useForm<newClassType>({
         resolver: zodResolver(newClassSchema),
         defaultValues: classDefaultValues,
     });
@@ -71,6 +73,7 @@ const CreateClassForm: FC = () => {
         handleSubmit,
         register,
         formState: { errors },
+      getValues
     } = methods;
 
     const { user } = useUser();
@@ -92,15 +95,15 @@ const CreateClassForm: FC = () => {
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
         setIsLoading(true);
-
-        data.owner = user?.id || '';
+        console.log(data)
+        data.ownerId = user?.id || 0;
 
         //Set end time from duration
-        const endTime = new Date(data.startTime.getTime());
+        const endTime = new Date(data.startDate.getTime());
         endTime.setMinutes(endTime.getMinutes() + duration);
-        data.endTime = endTime;
+        data.endDate = endTime;
 
-        const newClassData: ClassType = {
+        const newClassData: newClassType = {
             ...data,
         };
         await mutateAsync(newClassData);
@@ -115,29 +118,33 @@ const CreateClassForm: FC = () => {
                         type="text"
                         placeholder="Enter name of class here..."
                         className="w-full text-2xl md:text-3xl max-w-sm border-0 ring-0 focus:ring-0"
-                        {...register('name', { required: true })}
+                        {...register('title', { required: true })}
                     />
-                    {errors.name && (
+                    {errors.title && (
                         <span className="px-4 text-red-500">
                             This field is required
                         </span>
                     )}
                 </div>
+                <button onClick={() => {
+                    console.log(errors);
+                    console.log(getValues())
+                }}>CLICK</button>
 
                 {/* CLASS TYPE */}
                 <label className="label">
                     <span>Type</span>
                 </label>
-                <select {...register('type')} className="custom-select">
-                    <option>Group</option>
-                    <option>Personal</option>
+                <select {...register('classType')} className="custom-select">
+                    <option value="GROUP">Group</option>
+                    <option value="PERSONAL">Personal</option>
                 </select>
 
                 {/* START DATE */}
                 <label className="label pb-0">
                     <span>Start Time</span>
                 </label>
-                <CustomDatePicker name="startTime" />
+                <CustomDatePicker name="startDate" />
 
                 {/* DURATION */}
                 <label className="label pb-0">
@@ -157,16 +164,15 @@ const CreateClassForm: FC = () => {
                     <option value={180}>3 hours</option>
                 </select>
 
-                {/* STUDENT */}
-                {/*<label className="label">*/}
-                {/*    <span>Student</span>*/}
-                {/*</label>*/}
-                {/*<input*/}
-                {/*    type="text"*/}
-                {/*    placeholder="Type here"*/}
-                {/*    className="custom-select"*/}
-                {/*    {...register('student', { required: true })}*/}
-                {/*/>*/}
+                <label className="label">
+                    <span>Student</span>
+                </label>
+                <input
+                    type="text"
+                    placeholder="Type here"
+                    className="custom-select"
+                    {...register('studentName', { required: true })}
+                />
 
                 {/* REMINDER */}
                 <label className="label">

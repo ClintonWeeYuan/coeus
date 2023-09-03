@@ -1,12 +1,12 @@
 import { FC, useMemo } from 'react';
-import { IClass } from '@/lib/types';
 import MonthEventBlock from '@/components/schedule/MonthEventBlock';
+import { ClassEvent } from "@prisma/client";
 
 const DAYS = ['MON', 'TUES', 'WED', 'THURS', 'FRI', 'SAT', 'SUN'];
 
 interface Props {
     currentDate: Date;
-    data: IClass[] | undefined;
+    data: ClassEvent[] | undefined;
 }
 
 const MonthSchedule: FC<Props> = ({ currentDate, data }) => {
@@ -33,16 +33,16 @@ const MonthSchedule: FC<Props> = ({ currentDate, data }) => {
         );
     }, [currentDate]);
 
-    const CLASSDATA: IClass[][] = useMemo(() => {
+    const CLASSDATA: ClassEvent[][] = useMemo(() => {
         const classDataArray = [
             ...Array.from(
                 { length: numberOfDaysInMonth + 1 },
-                (): IClass[] => [],
+                (): ClassEvent[] => [],
             ),
         ];
 
         data?.forEach((value) => {
-            const dateInMonth = value.startTime.getDate();
+            const dateInMonth = value.startDate.getDate();
             classDataArray[dateInMonth].push(value);
         });
 

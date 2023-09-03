@@ -5,9 +5,20 @@ import LoadingButton from '@/components/common/LoadingButton';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useUser from '@/components/hooks/useUser';
+import { toast } from "sonner";
 
 const Login: NextPageWithLayout = () => {
-    const { mutateAsync } = trpc.session.login.useMutation();
+    const { mutateAsync } = trpc.session.login.useMutation({
+        onSuccess: async () => {
+            await router.push('/dashboard');
+        },
+        onError: (error) => {
+            toast.error(error.message)
+        },
+        onSettled: () => {
+            setIsLoading(false);
+        }
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,11 +34,10 @@ const Login: NextPageWithLayout = () => {
         setIsLoading(true);
         try {
             await mutateAsync({ email, password });
-            await router.push('/dashboard');
+
         } catch (e) {
             console.log(e);
         }
-        setIsLoading(false);
     };
     return (
         <>

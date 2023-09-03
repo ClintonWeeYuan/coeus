@@ -7,7 +7,7 @@ import { FormValues } from '@/components/schedule/CreateClassModal';
 import { TIMELIST } from '@/lib/dateTime';
 
 interface Props {
-    name: 'startTime';
+    name: 'startDate';
 }
 
 const CustomDatePicker: FC<Props> = ({ name }) => {
@@ -19,10 +19,10 @@ const CustomDatePicker: FC<Props> = ({ name }) => {
         const hours = parseInt(time[0]);
         const minutes = parseInt(time[1]);
 
-        const currentTime = getValues().startTime;
+        const currentTime = getValues().startDate;
         const newTime = new Date(currentTime.getTime());
         newTime.setHours(hours, minutes, 0, 0);
-        setValue('startTime', newTime);
+        setValue('startDate', newTime);
     };
     const isDateInFuture = (date: Date): boolean => {
         const today = new Date();

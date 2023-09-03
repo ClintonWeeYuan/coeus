@@ -1,30 +1,36 @@
 import { NextPageWithLayout } from '@/pages/_app';
 import { useForm } from 'react-hook-form';
 import { trpc } from '@/utils/trpc';
-import { IUser } from '@/models/user.model';
 import LoadingButton from '@/components/common/LoadingButton';
 import { useState } from 'react';
 import Link from 'next/link';
+import { IUser } from "@/lib/types";
+import { toast } from "sonner";
 const Signup: NextPageWithLayout = () => {
     const { register, handleSubmit } = useForm<IUser>();
 
     const [isLoading, setIsLoading] = useState(false);
 
     const { mutate } = trpc.user.createUser.useMutation({
-        onSettled: (data) => {
-            console.log(data);
+        onSettled: () => {
             setIsLoading(false);
         },
+        onSuccess: () => {
+            toast.success("User successfully created!")
+        },
+        onError: (error) => {
+            toast.error(error.message)
+        }
     });
 
     const onSubmit = async (data: IUser) => {
-        await setIsLoading(true);
-        await mutate(data);
+        setIsLoading(true);
+        mutate(data);
     };
 
     return (
         <>
-            <section className="bg-gray-50 dark:bg-gray-900">
+            <section className="min-h-screen bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
