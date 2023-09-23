@@ -9,13 +9,14 @@ datasource db {
 }
 
 model User {
-  id          Int          @id @default(autoincrement())
-  email       String       @unique
-  firstName   String
-  lastName    String
-  password    String
-  classEvents ClassEvent[]
-  Page        Page[]
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  firstName    String
+  lastName     String
+  password     String
+  classEvents  ClassEvent[]
+  Page         Page[]
+  weekSchedule WeekSchedule?
 }
 
 enum ClassType {
@@ -34,6 +35,14 @@ model ClassEvent {
   endDate     DateTime
   alert       String
   link        String
+}
+
+model WeekSchedule {
+  id       Int    @id @default(autoincrement())
+  owner    User   @relation(fields: [ownerId], references: [id])
+  ownerId  Int    @unique
+  schedule Json
+  timezone String
 }
 
 model Page {

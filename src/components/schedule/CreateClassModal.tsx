@@ -73,7 +73,6 @@ const CreateClassForm: FC = () => {
         handleSubmit,
         register,
         formState: { errors },
-      getValues
     } = methods;
 
     const { user } = useUser();
@@ -126,10 +125,6 @@ const CreateClassForm: FC = () => {
                         </span>
                     )}
                 </div>
-                <button onClick={() => {
-                    console.log(errors);
-                    console.log(getValues())
-                }}>CLICK</button>
 
                 {/* CLASS TYPE */}
                 <label className="label">
