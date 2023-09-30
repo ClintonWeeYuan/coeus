@@ -23,4 +23,7 @@ export interface IUser {
     password: string,
 }
 
-
+export interface Slot {
+    start: number,
+    end: number
+}

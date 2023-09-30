@@ -11,6 +11,11 @@ const userRouter = router({
     console.log(users)
     return users;
   }),
+  getUserSchedule: procedure.input(z.number()).query(async ({ input }) => {
+    const users = await prisma.weekSchedule.findUnique({ where: { ownerId: input } });
+    console.log(users)
+    return users;
+  }),
   createUser: procedure
     .input(
       z.object({
@@ -24,18 +29,24 @@ const userRouter = router({
       const { firstName, lastName, email, password } = input;
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
-      try{
+      try {
         const userModelData = await prisma.user.create({
           data: {
             firstName,
             lastName,
             email,
             password: hashedPassword,
+            weekSchedule: {
+              create: {
+                schedule: '',
+                timezone: '',
+              }
+            }
           }
         });
 
         return { user: userModelData };
-      } catch(e){
+      } catch (e) {
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
           // The .code property can be accessed in a type-safe manner
           if (e.code === 'P2002') {
@@ -51,8 +62,45 @@ const userRouter = router({
           }
         }
       }
+    }),
+  editUser: procedure
+    .input(
+      z.object({
+        id: z.number(),
+        firstName: z.string().optional(),
+        lastName: z.string().optional(),
+        email: z.string().optional(),
+        schedule: z.string().optional(),
+        timezone: z.string().optional()
+      }),
+    )
+    .mutation(async ({ input }) => {
 
-
+      try {
+        await prisma.user.update({
+          where: {
+            id: input.id
+          },
+          data: {
+            firstName: input.firstName || undefined,
+            lastName: input.lastName || undefined,
+            email: input.email || undefined,
+            weekSchedule: {
+              update: {
+                where: {
+                  ownerId: input.id
+                },
+                data: {
+                  schedule: input.schedule || undefined,
+                  timezone: input.timezone || undefined
+                }
+              }
+            }
+          }
+        })
+      } catch (e) {
+        console.log(e)
+      }
     }),
 });
 

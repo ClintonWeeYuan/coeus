@@ -1,9 +1,5 @@
 import { FC, useEffect, useState } from "react";
-
-interface Slot {
-  start: number,
-  end: number
-}
+import { Slot } from "@/lib/types";
 
 interface Props {
   slots: Slot[]
@@ -24,7 +20,6 @@ const AvailableHoursBar: FC<Props> = ({ slots }) => {
         return 1;
       }
     });
-    console.log(slots)
 
     const temp: Slot[] = [];
 
