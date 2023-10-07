@@ -64,7 +64,7 @@ const CreateSlotModal: FC<Props> = ({ weekday, slots, updateSlots }) => {
 
   return (
     <>
-      <div className="col-span-1">
+      <div className="ml-0 col-span-2 md:col-span-1">
         <button className="btn btn-square btn-ghost" type="button" onClick={() => setModalOpen(true)}><MdEdit
           className=""/>
         </button>

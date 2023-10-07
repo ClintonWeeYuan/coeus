@@ -15,6 +15,9 @@ module.exports = {
                 24: 'repeat(24, minmax(20px, 1fr))',
                 48: 'repeat(48, minmax(0, 1fr))',
             },
+            minWidth: {
+                500: '500px'
+            },
             gridColumnStart: {
                 13: '13',
                 14: '14',

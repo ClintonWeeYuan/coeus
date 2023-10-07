@@ -121,8 +121,8 @@ const Settings: NextPageWithLayout = () => {
           <div className="flex flex-col overflow-x-auto">
             {
               slots.map((slot, index) => checkedState[index] && (
-                <div key={index} className="px-2 mb-6 min-w-fit grid grid-cols-12 gap-4 items-center">
-                  <div className="col-span-1 flex justify-center select-none cursor-pointer rounded-lg border-2 border-primary-200
+                <div key={index} className="px-2 mb-6 grid grid-cols-12 gap-2 md:gap-4 items-center">
+                  <div className="col-span-2 md:col-span-1 flex justify-center select-none cursor-pointer rounded-lg border-2 border-primary-200
                     py-3 px-6 font-bold text-primary-200 transition-colors duration-200 ease-in-out peer-checked:bg-primary-200 peer-checked:text-primary-700 peer-checked:border-primary-200">{weekdays[index].slice(0, 3)}</div>
                   <AvailableHoursBar slots={slot}/>
                   <CreateSlotModal updateSlots={(slots) => updateSlots(slots, index)} weekday={weekdays[index]}
