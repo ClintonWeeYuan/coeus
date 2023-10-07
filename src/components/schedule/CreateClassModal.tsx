@@ -190,6 +190,7 @@ const CreateClassForm: FC = () => {
                     <LoadingButton
                       isLoading={isLoading}
                       text="Schedule Class"
+                      isSubmit={true}
                     />
                 </div>
             </form>

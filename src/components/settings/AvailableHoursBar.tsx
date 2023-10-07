@@ -1,20 +1,27 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useMemo } from "react";
 import { Slot } from "@/lib/types";
 
 interface Props {
   slots: Slot[]
 }
 
+const convertSlotNumberToTime = (startSlot: number, endSlot: number): string => {
+  const startHour = Math.floor(startSlot / 2).toString();
+  const startMinute = startSlot % 2 ? "30" : "00";
+
+  const endHour = Math.floor(endSlot / 2).toString();
+  const endMinute = endSlot % 2 ? "30" : "00";
+
+  return `${startHour}:${startMinute} - ${endHour}:${endMinute}`;
+}
+
 const AvailableHoursBar: FC<Props> = ({ slots }) => {
 
-  const [mergedSlots, setMergedSlots] = useState(slots);
-
-  useEffect(() => {
-
-    slots.sort((a,b) => {
-      if(a.start < b.start){
+  const mergedSlots = useMemo(() => {
+    slots.sort((a, b) => {
+      if (a.start < b.start) {
         return -1;
-      } else if(a.start == b.start){
+      } else if (a.start == b.start) {
         return a.end - b.end;
       } else {
         return 1;
@@ -34,25 +41,26 @@ const AvailableHoursBar: FC<Props> = ({ slots }) => {
       if (slot.start <= prevSlot.end) {
         prevSlot.end = Math.max(slot.end, prevSlot.end);
       } else {
-        temp.push({...slot});
+        temp.push({ ...slot });
       }
-
     })
 
-    setMergedSlots(temp);
+    return slots;
   }, [slots])
 
   return (
-    <div className="relative bg-gray-100 rounded-lg col-span-9 h-full grid grid-cols-48">
-      {
-        mergedSlots.map((slot, index) => (
-          <div key={index} style={{ gridColumn: `${slot.start} / ${slot.end}` }}
-               className="overflow-hidden px-4 flex items-center h-full rounded-lg bg-primary-700 text-white">
-            <p className="text-center text-ellipsis overflow-hidden whitespace-nowrap"></p>
-          </div>
-        ))
-      }
-
+    <div className="relative col-span-10 h-full flex flex-col">
+      <div className="w-full bg-gray-100 rounded-lg grid grid-cols-48 h-full">
+        {
+          mergedSlots.map((slot, index) => (
+            <div key={index} style={{ gridColumn: `${slot.start} / ${slot.end}` }} className="tooltip" data-tip={convertSlotNumberToTime(slot.start, slot.end)}>
+              <div
+                   className="px-4 flex items-center h-full rounded-lg bg-primary-700 text-white">
+              </div>
+            </div>
+          ))
+        }
+      </div>
     </div>
   )
 }

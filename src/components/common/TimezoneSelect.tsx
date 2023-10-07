@@ -1,6 +1,7 @@
-import { FC, Fragment, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import { useTimezoneSelect, allTimezones, ITimezoneOption } from 'react-timezone-select'
 import { Combobox, Transition } from "@headlessui/react";
+import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
 interface Props {
   onChange?: (view: string) => void;
@@ -15,8 +16,11 @@ const timezones = {
 
 const TimezoneSelect: FC<Props> = ({ onChange, defaultTimezone }) => {
   const { options } = useTimezoneSelect({ labelStyle, timezones })
-
   const [selectedOption, setSelectedOption] = useState<ITimezoneOption>(options.find((timezone) => timezone.value === defaultTimezone) || options[0])
+
+  useEffect(() => {
+    setSelectedOption(options.find((timezone) => timezone.value === defaultTimezone) || options[0])
+  }, [defaultTimezone])
 
   const [query, setQuery] = useState('')
 
@@ -34,8 +38,17 @@ const TimezoneSelect: FC<Props> = ({ onChange, defaultTimezone }) => {
 
   return (
     <Combobox value={selectedOption} onChange={handleChange}>
+      <div className="relative mt-1">
+        <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
       <Combobox.Input displayValue={(timezone : ITimezoneOption) => timezone.label} onChange={(event) => setQuery(event.target.value)}
-                      className="relative w-full cursor-pointer rounded-lg bg-gray-100 py-2 pl-3 pr-10 text-left focus:outline-none sm:text-sm"/>
+                      className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"/>
+          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+            <ChevronUpDownIcon
+              className="h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </Combobox.Button>
+        </div>
       <Transition
         as={Fragment}
         leave="transition ease-in duration-100"
@@ -43,7 +56,7 @@ const TimezoneSelect: FC<Props> = ({ onChange, defaultTimezone }) => {
         leaveTo="opacity-0"
       >
         <Combobox.Options
-          className="z-20 scrollbar mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          className="absolute z-20 scrollbar mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
           {filteredTimezones.map((timezone) => (
             <Combobox.Option key={timezone.value} value={timezone} className={({ active }) =>
               `relative cursor-default select-none py-2 pl-10 pr-4 ${
@@ -57,6 +70,7 @@ const TimezoneSelect: FC<Props> = ({ onChange, defaultTimezone }) => {
           ))}
         </Combobox.Options>
       </Transition>
+      </div>
     </Combobox>
   )
 }

@@ -116,6 +116,7 @@ const Login: NextPageWithLayout = () => {
                                 </div>
                                 <LoadingButton
                                     isLoading={isLoading}
+                                    isSubmit={true}
                                     text="Login"
                                 />
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
