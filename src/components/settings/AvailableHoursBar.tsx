@@ -49,13 +49,15 @@ const AvailableHoursBar: FC<Props> = ({ slots }) => {
   }, [slots])
 
   return (
-    <div className="h-12 md:h-16 col-span-8 md:col-span-10 flex flex-col max-w-full overflow-x-auto">
-      <div className="w-full bg-gray-100 rounded-lg grid grid-cols-48 h-full min-w-500">
+    <div className="h-12 md:h-16 py-2 col-span-8 md:col-span-10 flex flex-col max-w-full overflow-x-auto">
+      <div className="w-full bg-gray-100 rounded-lg grid grid-cols-48 h-full min-w-500 ">
         {
           mergedSlots.map((slot, index) => (
-            <div key={index} style={{ gridColumn: `${slot.start} / ${slot.end}` }} className="tooltip" data-tip={convertSlotNumberToTime(slot.start, slot.end)}>
+            <div key={index} style={{ gridColumn: `${slot.start} / ${slot.end}` }} className="group">
               <div
-                className="px-4 flex items-center h-full rounded-lg bg-primary-700 text-white"/>
+                className="h-full rounded-lg bg-primary-700"/>
+                <p
+                  className="whitespace-nowrap z-50 absolute bottom-[-2%] scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">{convertSlotNumberToTime(slot.start, slot.end)}</p>
             </div>
           ))
         }
