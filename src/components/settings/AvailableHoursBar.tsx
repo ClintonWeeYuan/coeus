@@ -49,7 +49,7 @@ const AvailableHoursBar: FC<Props> = ({ slots }) => {
   }, [slots])
 
   return (
-    <div className="h-12 md:h-16 col-span-8 md:col-span-10 flex flex-col max-w-full overflow-x-auto border-2 border-red-500">
+    <div className="h-12 md:h-16 col-span-8 md:col-span-10 flex flex-col max-w-full overflow-x-auto">
       <div className="w-full bg-gray-100 rounded-lg grid grid-cols-48 h-full min-w-500">
         {
           mergedSlots.map((slot, index) => (
