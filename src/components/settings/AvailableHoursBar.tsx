@@ -49,15 +49,16 @@ const AvailableHoursBar: FC<Props> = ({ slots }) => {
   }, [slots])
 
   return (
-    <div className="h-12 md:h-16 py-2 col-span-8 md:col-span-10 flex flex-col max-w-full overflow-x-auto">
-      <div className="w-full bg-gray-100 rounded-lg grid grid-cols-48 h-full min-w-500 ">
+    <div className="relative h-24 pt-12 col-span-8 md:col-span-10 flex flex-col max-w-full overflow-x-auto">
+      <div className="w-full bg-gray-100 rounded-lg grid grid-cols-48 h-full min-w-500">
         {
           mergedSlots.map((slot, index) => (
-            <div key={index} style={{ gridColumn: `${slot.start} / ${slot.end}` }} className="group">
+            <div key={index} style={{ gridColumn: `${slot.start} / ${slot.end}` }} className="group relative overflow-y-visible">
               <div
-                className="h-full rounded-lg bg-primary-700"/>
+                className="h-full rounded-lg bg-primary-700 overflow-y-visible">
                 <p
-                  className="whitespace-nowrap z-50 absolute bottom-[-2%] scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">{convertSlotNumberToTime(slot.start, slot.end)}</p>
+                  className="whitespace-nowrap z-50 absolute top-[-75%] scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">{convertSlotNumberToTime(slot.start, slot.end)}</p>
+              </div>
             </div>
           ))
         }
